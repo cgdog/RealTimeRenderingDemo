@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "Renderer/trianglequadrenderer.h"
 
 class MainWindow : public QMainWindow
 {
@@ -10,5 +11,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+private:
+    BaseGLWidget* glWidget;
 };
 #endif // MAINWINDOW_H

@@ -18,6 +18,10 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 
+    void changeModel(const string& modelPath, bool isUpdateGL = true) override;
+    void changeShaders(const QString& vsPath, const QString& fsPath, bool isUpdateGL = true) override;
+    void changeModelAndShaders(const string& modelPath, const QString& vsPath, const QString& fsPath, bool isUpdateGL = true) override;
+
 private:
     int m_frame;
     float rotationFactor = 0.01f;

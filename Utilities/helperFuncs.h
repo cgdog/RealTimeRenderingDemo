@@ -29,6 +29,7 @@ namespace LXY{
     std::ostream& log();
 
     bool isEndsWith(const string & source, const string & pattern);
+    bool isStartsWith(const string & source, const string & pattern);
 
 }
 #endif // HELPFUNC_H

@@ -4,13 +4,33 @@
 using namespace LXY;
 
 BaseGLWidget::BaseGLWidget(QWidget *parent) : QOpenGLWidget(parent),
-    m_vbo(nullptr), m_vao(nullptr), m_shader(nullptr), clearColor(Qt::black)
+    m_vbo(nullptr), m_vao(nullptr), m_ebo(nullptr), m_shader(nullptr), clearColor(Qt::black)
 {
 
 }
 
 BaseGLWidget::~BaseGLWidget()
 {
+    if (nullptr != m_vao)
+    {
+        delete m_vao;
+    }
+
+    if (nullptr != m_vbo)
+    {
+        delete m_vbo;
+    }
+
+    if (nullptr != m_ebo)
+    {
+        delete m_ebo;
+    }
+
+    if (nullptr != m_shader)
+    {
+        delete m_shader;
+    }
+
 }
 
 QSize BaseGLWidget::minimumSizeHint() const

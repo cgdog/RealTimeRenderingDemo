@@ -10,6 +10,9 @@
 #include <QMouseEvent>
 
 #include "Models/model.h"
+#include <string>
+#include "Shaders/shader.h"
+using std::string;
 
 class BaseGLWidget : public QOpenGLWidget
 {
@@ -20,6 +23,9 @@ public:
     virtual QSize minimumSizeHint() const override;
     virtual QSize sizeHint() const override;
     virtual void setClearColor(const QColor &color);
+    virtual void changeModel(const string& modelPath, bool isUpdateGL = true) = 0;
+    virtual void changeShaders(const QString& vsPath, const QString& fsPath, bool isUpdateGL = true) = 0;
+    virtual void changeModelAndShaders(const string& modelPath, const QString& vsPath, const QString& fsPath, bool isUpdateGL = true) = 0;
 
 protected:
     virtual void initializeGL() override = 0;
@@ -36,8 +42,9 @@ protected slots:
 
 protected:
     QOpenGLBuffer *m_vbo;
+    QOpenGLBuffer *m_ebo;
     QOpenGLVertexArrayObject *m_vao;
-    QOpenGLShaderProgram *m_shader;
+    Shader * m_shader;
 
     Model model;
 

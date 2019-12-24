@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMenuBar>
 #include "Renderer/trianglequadrenderer.h"
 
 class MainWindow : public QMainWindow
@@ -13,6 +14,15 @@ public:
     ~MainWindow();
 
 private:
+    void processMenu();
+
+private slots:
+    void onClickLoadModelAndShaders();
+    void onClickLoadModel();
+    void onClickLoadShaders();
+
+private:
     BaseGLWidget* glWidget;
+    QMenuBar* mb;
 };
 #endif // MAINWINDOW_H

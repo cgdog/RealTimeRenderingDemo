@@ -5,9 +5,11 @@
     <file alias="default.vs">DefaultModels/default.vs</file>
     <file alias="default.fs">DefaultModels/default.fs</file>
     <file alias="quad.off">DefaultModels/quad/quad.off</file>
+    <file alias="quad.vs">DefaultModels/quad/quad.vs</file>
+    <file alias="quad.fs">DefaultModels/quad/quad.fs</file>
     <file alias="triangle.off">DefaultModels/triangles/triangle.off</file>
-    <file alias="triangle.vs">DefaultModels/triangles/triangle.off</file>
-    <file alias="triangle.fs">DefaultModels/triangles/triangle.off</file>
+    <file alias="triangle.vs">DefaultModels/triangles/triangle.vs</file>
+    <file alias="triangle.fs">DefaultModels/triangles/triangle.fs</file>
 </qresource>
 </RCC>
 

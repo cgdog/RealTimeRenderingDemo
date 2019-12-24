@@ -70,4 +70,12 @@ namespace LXY{
         }
     }
 
+    bool isStartsWith(const string & source, const string & pattern) {
+        if (source.length() >= pattern.length()) {
+            return (0 == source.compare (0, pattern.length(), pattern));
+        } else {
+            return false;
+        }
+    }
+
 }

@@ -23,10 +23,10 @@ void Model::loadModel(string modelPath, bool isDefaultModel) {
 
     vertices.clear();
     indices.clear();
-    if (!isDefaultModel) {
-        LXY::loadModel(modelPath, vertices, indices);
-    } else {
+    if (isDefaultModel || isStartsWith(modelPath, ":/")) {
         LXY::loadDefaultModel(modelPath, vertices, indices);
+    } else if (!isDefaultModel) {
+        LXY::loadModel(modelPath, vertices, indices);
     }
 }
 

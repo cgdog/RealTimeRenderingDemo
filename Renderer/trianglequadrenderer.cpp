@@ -17,9 +17,10 @@ static const char* FRAGMENT_SHADER_CODE =
         "}\n";
 
 TriangleQuadRenderer::TriangleQuadRenderer(QWidget *parent) :
-    BaseGLWidget(parent), m_frame(0)
+    BaseGLWidget(parent), m_frame(0), xRot(0), yRot(0), zRot(0)
 {
-
+    //model.loadModel(":/quad.off", true);
+    model.loadModel(":/default.off", true);
 }
 
 TriangleQuadRenderer::~TriangleQuadRenderer()
@@ -43,15 +44,10 @@ void TriangleQuadRenderer::initializeGL()
     m_vbo = new QOpenGLBuffer(QOpenGLBuffer::Type::VertexBuffer);
     m_vao->create();
     m_vao->bind();
-
-    static const GLfloat VERTEX_DATA[] = {
-        -0.5f, -0.5f, -0.2f,
-        0.5f, -0.5f, -0.2f,
-        -0.5f, 0.5f, -0.2f
-    };
+    auto & vertices = model.getVertices();
     m_vbo->create();
     m_vbo->bind();
-    m_vbo->allocate(VERTEX_DATA, 3*3* sizeof(GLfloat));
+    m_vbo->allocate(&vertices[0], vertices.size()* sizeof(vertices[0]));
     f->glEnableVertexAttribArray(0);
     f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), 0);
     m_vbo->release();
@@ -78,15 +74,16 @@ void TriangleQuadRenderer::paintGL()
     QMatrix4x4 matrix;
     matrix.perspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
     //matrix.scale(0.5f, 0.5f, 0.5f);
-    matrix.translate(0, 0, -2);
-    auto fr = screen()->refreshRate();
+    //matrix.translate(0, 0, -2);
+    //auto fr = screen()->refreshRate();
     //matrix.rotate(100.0f * m_frame / screen()->refreshRate(), 0, 1, 0);
     matrix.rotate(rotationFactor * xRot, 0, 1, -2);
     matrix.rotate(rotationFactor * yRot, 1, 0, -2);
     int matrixUniformLoc = m_shader->uniformLocation("matrix");
     m_shader->setUniformValue(matrixUniformLoc, matrix);
 
-    f->glDrawArrays(GL_TRIANGLES, 0, 3);
+    f->glDrawArrays(GL_TRIANGLES, 0, model.getVertices().size());
+    //f->glDrawElements(GL_TRIANGLES, 4, GL_UNSIGNED_INT, &(model.getIndices()[0]));
     m_shader->release();
     m_vao->release();
     ++m_frame;
@@ -94,15 +91,15 @@ void TriangleQuadRenderer::paintGL()
 }
 
 void TriangleQuadRenderer::mousePressEvent(QMouseEvent* event) {
-   lastPos = event->pos();
+   //lastPos = event->pos();
 }
 
 void TriangleQuadRenderer::mouseMoveEvent(QMouseEvent *event) {
-    QPoint curPos = event->pos();
-    QPoint deltPos = lastPos - curPos;
-    xRot += deltPos.x();
-    //yRot += deltPos.y();
-    update();
+//    QPoint curPos = event->pos();
+//    QPoint deltPos = lastPos - curPos;
+//    xRot += deltPos.x();
+//    yRot += deltPos.y();
+//    update();
 }
 
 void TriangleQuadRenderer::mouseReleaseEvent(QMouseEvent *event) {

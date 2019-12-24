@@ -9,6 +9,8 @@
 #include <QOpenGLVertexArrayObject>
 #include <QMouseEvent>
 
+#include "Models/model.h"
+
 class BaseGLWidget : public QOpenGLWidget
 {
     Q_OBJECT
@@ -36,6 +38,8 @@ protected:
     QOpenGLBuffer *m_vbo;
     QOpenGLVertexArrayObject *m_vao;
     QOpenGLShaderProgram *m_shader;
+
+    Model model;
 
     QTimer *m_timer;
     QColor clearColor;

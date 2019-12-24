@@ -48,3 +48,6 @@ DISTFILES += \
     DefaultModels/triangles/triangle.fs \
     DefaultModels/triangles/triangle.off \
     DefaultModels/triangles/triangle.vs
+
+RESOURCES += \
+    DefaultResource.qrc

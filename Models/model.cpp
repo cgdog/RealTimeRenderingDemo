@@ -3,7 +3,7 @@
 using namespace LXY;
 
 Model::Model(){
-    loadModel(":/default.off", true);
+    //loadModel(":/default.off", true);
 }
 
 

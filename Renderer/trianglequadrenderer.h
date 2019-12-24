@@ -6,7 +6,7 @@
 class TriangleQuadRenderer : public BaseGLWidget
 {
 public:
-    TriangleQuadRenderer(QWidget *parent=0);
+    TriangleQuadRenderer(QWidget *parent=nullptr);
     ~TriangleQuadRenderer() override;
 protected:
     void initializeGL() override;

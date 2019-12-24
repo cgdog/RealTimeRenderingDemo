@@ -1,0 +1,13 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource>
+    <file alias="default.off">DefaultModels/default.off</file>
+    <file alias="default.vs">DefaultModels/default.vs</file>
+    <file alias="default.fs">DefaultModels/default.fs</file>
+    <file alias="quad.off">DefaultModels/quad/quad.off</file>
+    <file alias="triangle.off">DefaultModels/triangles/triangle.off</file>
+    <file alias="triangle.vs">DefaultModels/triangles/triangle.off</file>
+    <file alias="triangle.fs">DefaultModels/triangles/triangle.off</file>
+</qresource>
+</RCC>
+

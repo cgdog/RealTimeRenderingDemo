@@ -66,8 +66,8 @@ void TriangleQuadRenderer::mousePressEvent(QMouseEvent* event) {
 void TriangleQuadRenderer::mouseMoveEvent(QMouseEvent *event) {
     QPoint curPos = event->pos();
     QPoint deltPos = lastPos - curPos;
-    xRot += deltPos.x();
-    yRot += deltPos.y();
+    xRot -= deltPos.x();
+    yRot -= deltPos.y();
     update();
 }
 

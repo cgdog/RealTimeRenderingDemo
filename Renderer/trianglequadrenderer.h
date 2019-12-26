@@ -24,7 +24,7 @@ protected:
 
 private:
     int m_frame;
-    float rotationFactor = 0.01f;
+    float rotationFactor = 0.02f;
     int xRot;
     int yRot;
     int zRot;

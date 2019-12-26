@@ -9,6 +9,8 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include <algorithm>
+#include <iterator>
 
 using namespace std;
 
@@ -30,6 +32,8 @@ namespace LXY{
 
     bool isEndsWith(const string & source, const string & pattern);
     bool isStartsWith(const string & source, const string & pattern);
+
+    void ifstream2ostringstream(ifstream& fin, ostringstream& sout);
 
 }
 #endif // HELPFUNC_H

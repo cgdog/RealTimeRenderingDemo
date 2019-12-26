@@ -3,27 +3,34 @@
 
 namespace LXY{
 
-    QStringList OpenFileChooser(const QString &caption, const QString &directory, const QString &filter, bool canMultiFile) {
+    QStringList OpenFileChooser(const QString &caption, const QString &directory, const QString &filter, bool canMultiFile)
+    {
         QFileDialog *fileDialog = new QFileDialog(nullptr, caption, directory, filter);
 
-        if (canMultiFile) {
+        if (canMultiFile)
+        {
             fileDialog->setFileMode(QFileDialog::ExistingFiles);
-        } else {
+        }
+        else
+        {
             fileDialog->setFileMode(QFileDialog::ExistingFile);
         }
         fileDialog->setViewMode(QFileDialog::Detail);
 
         QStringList fileNames;
-        if(fileDialog->exec()) {
+        if(fileDialog->exec())
+        {
             fileNames = fileDialog->selectedFiles();
         }
         return fileNames;
     }
 
 
-   string readFileToString2(const QString& path) {
+   string readFileToString2(const QString& path)
+   {
         QFile file(path);
-        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
             return nullptr;
         }
         QByteArray data = file.readAll();
@@ -31,18 +38,22 @@ namespace LXY{
         return source;
     }
 
-   string loadDefaultVertexShader() {
+   string loadDefaultVertexShader()
+   {
        return readFileToString2(":/default.vs");
    }
 
-   string loadDefaultFragmentShader() {
+   string loadDefaultFragmentShader()
+   {
        return readFileToString2(":/default.fs");
    }
 
-   string readFileToString(const QString& path) {
+   string readFileToString(const QString& path)
+   {
         std::string filePath = path.toStdString();
         std::ifstream fileIn(filePath);
-        if (fileIn.bad()) {
+        if (fileIn.bad())
+        {
            std::cerr << "open file " << filePath << "failed" << std::endl;
         }
 
@@ -54,28 +65,47 @@ namespace LXY{
         return source;
     }
 
-    std::ostream& logErr() {
+    std::ostream& logErr()
+    {
         return std::cerr;
     }
 
-    std::ostream& log() {
+    std::ostream& log()
+    {
         return std::cout;
     }
 
-    bool isEndsWith(const string & source, const string & pattern) {
-        if (source.length() >= pattern.length()) {
+    bool isEndsWith(const string & source, const string & pattern)
+    {
+        if (source.length() >= pattern.length())
+        {
             return (0 == source.compare (source.length() - pattern.length(), pattern.length(), pattern));
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
 
-    bool isStartsWith(const string & source, const string & pattern) {
-        if (source.length() >= pattern.length()) {
+    bool isStartsWith(const string & source, const string & pattern)
+    {
+        if (source.length() >= pattern.length())
+        {
             return (0 == source.compare (0, pattern.length(), pattern));
-        } else {
+        }
+        else
+        {
             return false;
         }
+    }
+
+    // http://www.cplusplus.com/reference/iterator/istreambuf_iterator/
+    // https://stackoverflow.com/questions/4064601/copy-data-from-fstream-to-stringstream-with-no-buffer
+    void ifstream2ostringstream(ifstream& fin, ostringstream& sout)
+    {
+        copy(istreambuf_iterator<char>(fin), istreambuf_iterator<char>(), ostreambuf_iterator<char>(sout));
+        //string ms = sout.str();
+        //cout << ms << endl;
     }
 
 }

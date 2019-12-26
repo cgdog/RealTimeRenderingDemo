@@ -30,7 +30,7 @@ void TriangleQuadRenderer::paintGL()
 {    
     QOpenGLFunctions *f = this->context()->functions();
     f->glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    f->glClearColor(0.0f, 0.2f, 0.0f, 1.0f);
+    f->glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     m_vao->bind();
     m_ebo->bind();
     m_shader->bind();
@@ -50,7 +50,7 @@ void TriangleQuadRenderer::paintGL()
 
     //f->glDrawArrays(GL_TRIANGLES, 0, model.getVertices().size());
     //f->glDrawArrays(GL_TRIANGLES, 0, 3);
-    f->glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(model.getIndices().size()), GL_UNSIGNED_INT, 0);
+    f->glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(model.getIndices().size()), GL_UNSIGNED_INT, nullptr);
     m_shader->release();
     m_ebo->release();
     m_vao->release();

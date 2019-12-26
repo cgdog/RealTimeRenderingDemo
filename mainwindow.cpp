@@ -1,5 +1,8 @@
 #include "mainwindow.h"
 #include "Utilities/helperFuncs.h"
+#include "Math/matrix4d.h"
+#include <sstream>
+
 using namespace LXY;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -28,6 +31,10 @@ void MainWindow::processMenu()
         fileMenu->addAction("Load &Model and Shaders", this, SLOT(onClickLoadModelAndShaders()));
         fileMenu->addAction("&Load Model", this, SLOT(onClickLoadModel()));
         fileMenu->addAction("Load &Shaders", this, SLOT(onClickLoadShaders()));
+
+        // for test.
+        auto testMenu = mb->addMenu(tr("&Test"));
+        testMenu->addAction("Test Matrix", this, SLOT(onClickTestMatrix()));
     }
 }
 
@@ -80,3 +87,19 @@ void MainWindow::onClickLoadShaders()
     this->glWidget->changeShaders(vsPath, fsPath);
 }
 
+void MainWindow::onClickTestMatrix()
+{
+    Matrix4D mat4;
+    //ifstream fin("./testInMat4.mat4");
+    //fin >> mat4;
+    std::istringstream strin("1 2 3 4\n"
+                             "0 5 6 7\n"
+                             "8 9 10 11\n"
+                             "12 13 14 15\n");
+    strin >> mat4;
+    ofstream fout("./testOutMat4.mat4");
+    fout << mat4;
+    cout << mat4;
+    //fin.close();
+    fout.close();
+}

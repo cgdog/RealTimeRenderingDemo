@@ -21,6 +21,9 @@ private slots:
     void onClickLoadModel();
     void onClickLoadShaders();
 
+    // for test.
+    void onClickTestMatrix();
+
 private:
     BaseGLWidget* glWidget;
     QMenuBar* mb;

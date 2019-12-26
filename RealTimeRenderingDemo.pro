@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Math/camera.cpp \
     Math/matrix4d.cpp \
     Models/model.cpp \
     Renderer/trianglequadrenderer.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    Math/camera.h \
     Math/matrix4d.h \
     Models/model.h \
     Renderer/trianglequadrenderer.h \

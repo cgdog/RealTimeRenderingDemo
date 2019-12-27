@@ -87,12 +87,15 @@ void TriangleQuadRenderer::paintGL()
     //m_shader->setMat4("matrix", matrix);
 
     Matrix4D projection = camera.getPerspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
-    Matrix4D rotation = camera.getTransform().rotate(rotationFactor * xRot, 0, 1, 0);
+    Matrix4D rotationX = camera.getTransform().rotate(rotationFactor * xRot, 0, 1, 0);
+    Matrix4D rotationY = camera.getTransform().rotate(rotationFactor * yRot, 1, 0, 0);
     Matrix4D translation = camera.getTransform().translate(0, 0, -2);
-    Matrix4D tmpMatrix = projection * translation * rotation;
+    Matrix4D tmpMatrix = projection * translation * rotationY * rotationX;
     //Matrix4D tmpMatrix = projection * translation;
     int matrixUniformLoc = m_shader->getUniformLocation("matrix");
-    f->glUniformMatrix4fv(matrixUniformLoc, 1, GL_FALSE, tmpMatrix.getData());
+    // 关于行优先存储、列优先存储。OpenGL函数需要列优先存储的数据
+    // https://blog.csdn.net/baiyu9821179/article/details/74852984
+    f->glUniformMatrix4fv(matrixUniformLoc, 1, GL_TRUE, tmpMatrix.getData());
 
     //f->glDrawArrays(GL_TRIANGLES, 0, model.getVertices().size());
     //f->glDrawArrays(GL_TRIANGLES, 0, 3);

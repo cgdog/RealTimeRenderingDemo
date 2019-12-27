@@ -108,4 +108,14 @@ namespace LXY{
         //cout << ms << endl;
     }
 
+    float degreeToRadian(float degree)
+    {
+        return degree / 180.0f * PI;
+    }
+
+    float radianToDegree(float radian)
+    {
+        return radian / PI * 180.0f;
+    }
+
 }

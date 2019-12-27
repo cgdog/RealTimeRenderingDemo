@@ -1,5 +1,5 @@
 #include "camera.h"
-
+#include "Utilities/helperFuncs.h"
 namespace LXY {
 
 
@@ -30,7 +30,8 @@ Matrix4D Camera::getPerspective(float left, float right, float top, float bottom
 // aspectRatio = width / height;
 Matrix4D Camera::getPerspective(float verticalAngle, float aspectRatio, float near, float far)
 {
-    float c = 1.0f / tan(verticalAngle / 2);
+    verticalAngle = degreeToRadian(verticalAngle / 2.0f);
+    float c = 1.0f / tan(verticalAngle);
     Matrix4D perspectiveTransform;
     perspectiveTransform(0, 0) = c / aspectRatio;
     perspectiveTransform(1, 1) = c;

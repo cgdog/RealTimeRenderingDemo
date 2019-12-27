@@ -12,14 +12,14 @@ public:
     ~Transform();
 
     // https://zhuanlan.zhihu.com/p/78987582
-    Matrix4D& rotate(float angle, float x, float y, float z);
-    Matrix4D& translate(float x, float y, float z);
-    Matrix4D& scale(float x, float y, float z);
+    Matrix4D rotate(float angle, float x, float y, float z);
+    Matrix4D translate(float x, float y, float z);
+    Matrix4D scale(float x, float y, float z);
 
 private:
-    Matrix4D rotation;
-    Matrix4D scaling;
-    Matrix4D translation;
+    //Matrix4D rotation;
+    //Matrix4D scaling;
+    //Matrix4D translation;
 };
 
 }

@@ -1,4 +1,5 @@
 #include "transform.h"
+#include "Utilities/helperFuncs.h"
 
 namespace LXY {
 
@@ -13,10 +14,12 @@ Transform::~Transform()
 }
 
 // to be optimized
-Matrix4D& Transform::rotate(float angle, float x, float y, float z)
+Matrix4D Transform::rotate(float angle, float x, float y, float z)
 {
-    float c = cos(angle);
-    float s = sin(angle);
+    float radianAngle = degreeToRadian(angle);
+    float c = cos(radianAngle);
+    float s = sin(radianAngle);
+    Matrix4D rotation;
     rotation[0] = c + (1 - c) * x * x;
     rotation[1] = (1 - c) * x * y - s * z;
     rotation[2] = (1 - c) * x * z + s * y;
@@ -26,11 +29,14 @@ Matrix4D& Transform::rotate(float angle, float x, float y, float z)
     rotation[8] = (1 - c) * x * z - s * y;
     rotation[9] = (1 - c) * y * z + s * x;
     rotation[10] = c + (1 - c) * z * z;
+    rotation[15] = 1;
+
     return rotation;
 }
 
-Matrix4D& Transform::translate(float x, float y, float z)
+Matrix4D Transform::translate(float x, float y, float z)
 {
+    Matrix4D translation;
     translation(0, 0) = 1;
     translation(1, 1) = 1;
     translation(2, 2) = 1;
@@ -41,8 +47,9 @@ Matrix4D& Transform::translate(float x, float y, float z)
     return translation;
 }
 
-Matrix4D& Transform::scale(float x, float y, float z)
+Matrix4D Transform::scale(float x, float y, float z)
 {
+    Matrix4D scaling;
     scaling[0] *= x;
     scaling[5] *= y;
     scaling[10] *= z;

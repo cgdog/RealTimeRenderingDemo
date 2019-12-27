@@ -25,6 +25,7 @@ void TriangleQuadRenderer::resizeGL( int width, int height )
     Q_UNUSED(width)
     Q_UNUSED(height)
 }
+
 /*
 void TriangleQuadRenderer::paintGL()
 {    
@@ -60,6 +61,8 @@ void TriangleQuadRenderer::paintGL()
 }
 */
 
+
+///*
 void TriangleQuadRenderer::paintGL()
 {
     QOpenGLFunctions *f = this->context()->functions();
@@ -75,7 +78,7 @@ void TriangleQuadRenderer::paintGL()
     matrix.translate(0, 0, -2); //注意这里，如果设为matrix.translate(0, 0, 0)会看不到某些模型
     //auto fr = screen()->refreshRate();
     //matrix.rotate(100.0f * m_frame / screen()->refreshRate(), 0, 1, 0);
-    //matrix.rotate(rotationFactor * xRot, 0, 1, 0);
+    matrix.rotate(rotationFactor * xRot, 0, 1, 0);
     //matrix.rotate(rotationFactor * yRot, 1, 0, 0);
     //int matrixUniformLoc = m_shader->uniformLocation("matrix");
     //int matrixUniformLoc = m_shader->getUniformLocation("matrix");
@@ -86,8 +89,8 @@ void TriangleQuadRenderer::paintGL()
     Matrix4D projection = camera.getPerspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
     Matrix4D rotation = camera.getTransform().rotate(rotationFactor * xRot, 0, 1, 0);
     Matrix4D translation = camera.getTransform().translate(0, 0, -2);
-    //Matrix4D tmpMatrix = projection * translation * rotation;
-    Matrix4D tmpMatrix = projection * translation;
+    Matrix4D tmpMatrix = projection * translation * rotation;
+    //Matrix4D tmpMatrix = projection * translation;
     int matrixUniformLoc = m_shader->getUniformLocation("matrix");
     f->glUniformMatrix4fv(matrixUniformLoc, 1, GL_FALSE, tmpMatrix.getData());
 
@@ -101,6 +104,7 @@ void TriangleQuadRenderer::paintGL()
     ++m_frame;
     this->context()->swapBuffers(this->context()->surface());
 }
+//*/
 
 void TriangleQuadRenderer::mousePressEvent(QMouseEvent* event) {
    lastPos = event->pos();

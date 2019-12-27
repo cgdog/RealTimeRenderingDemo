@@ -51,6 +51,7 @@ Matrix4D Camera::getOrtho(float left, float right, float top, float bottom, floa
     orthoTransform(1, 3) = -(top + bottom) / (top - bottom);
     orthoTransform(2, 2) = 2 / (far - near);
     orthoTransform(2, 3) = -(far + near) / (far - near);
+    orthoTransform(3, 3) = 1;
 
     return orthoTransform;
 }

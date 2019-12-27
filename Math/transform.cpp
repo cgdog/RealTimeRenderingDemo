@@ -31,6 +31,10 @@ Matrix4D& Transform::rotate(float angle, float x, float y, float z)
 
 Matrix4D& Transform::translate(float x, float y, float z)
 {
+    translation(0, 0) = 1;
+    translation(1, 1) = 1;
+    translation(2, 2) = 1;
+    translation(3, 3) = 1;
     translation[3] = x;
     translation[7] = y;
     translation[11] = z;

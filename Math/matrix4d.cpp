@@ -6,7 +6,7 @@ namespace LXY {
 Matrix4D::Matrix4D()
 {
     memset(data, 0, N2*sizeof(float));
-    data[N2-1] = 1;
+    //data[N2-1] = 1;
 }
 
 Matrix4D::Matrix4D(const Matrix4D& mat4)
@@ -46,7 +46,7 @@ Matrix4D Matrix4D::operator*(const Matrix4D& mat4)
         {
             for (int k = 0; k < N; ++k)
             {
-                res(i, j) += (*this)(i, k) + mat4(k, j);
+                res(i, j) += (*this)(i, k) * mat4(k, j);
             }
         }
     }
@@ -102,7 +102,7 @@ float Matrix4D::operator()(int r, int c) const
 {
     if (r >= 0 && r < N && c >= 0 && c < N)
     {
-        return data[r*c+c];
+        return data[r*N+c];
     }
     else
     {

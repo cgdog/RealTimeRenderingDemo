@@ -19,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Math/camera.cpp \
     Math/matrix4d.cpp \
+    Math/transform.cpp \
     Models/model.cpp \
     Renderer/trianglequadrenderer.cpp \
     Renderer/baseglwidget.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
 HEADERS += \
     Math/camera.h \
     Math/matrix4d.h \
+    Math/transform.h \
     Models/model.h \
     Renderer/trianglequadrenderer.h \
     Renderer/baseglwidget.h \

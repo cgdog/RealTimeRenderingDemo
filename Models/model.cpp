@@ -1,6 +1,7 @@
 #include "model.h"
 #include "Utilities/modelParser.h"
-using namespace LXY;
+
+namespace LXY {
 
 Model::Model(){
     //loadModel(":/default.off", true);
@@ -41,3 +42,9 @@ vector<int>& Model::getIndices() {
 }
 
 
+Transform& Model::getTransform()
+{
+    return transform;
+}
+
+}

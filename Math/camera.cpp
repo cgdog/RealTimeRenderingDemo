@@ -54,4 +54,9 @@ Matrix4D Camera::getOrtho(float left, float right, float top, float bottom, floa
     return orthoTransform;
 }
 
+Transform& Camera::getTransform()
+{
+    return transform;
+}
+
 }

@@ -12,6 +12,7 @@
 #include "Models/model.h"
 #include <string>
 #include "Shaders/shader.h"
+#include "Math/camera.h"
 using std::string;
 
 class BaseGLWidget : public QOpenGLWidget
@@ -52,6 +53,7 @@ protected:
     QColor clearColor;
     QPoint lastPos;
 
+    Camera camera;
 };
 
 #endif // BASEGLWIDGET_H

@@ -77,13 +77,25 @@ float& Matrix4D::operator()(int r, int c)
 {
     if (r >= 0 && r < N && c >= 0 && c < N)
     {
-        return data[r*c+c];
+        return data[r*N+c];
     }
     else
     {
         logErr() << "indices ("<<r <<", " << c << ") is out of range." <<endl;
         return data[0];
     }
+}
+
+float& Matrix4D::operator[](int index)
+{
+    assert(index >= 0 && index < N2);
+    return data[index];
+}
+
+float Matrix4D::operator[](int index) const
+{
+    assert(index >= 0 && index < N2);
+    return data[index];
 }
 
 float Matrix4D::operator()(int r, int c) const
@@ -97,36 +109,6 @@ float Matrix4D::operator()(int r, int c) const
         logErr() << "indices ("<<r <<", " << c << ") is out of range." <<endl;
         return data[0];
     }
-}
-
-// to be optimized
-void Matrix4D::rotate(float angle, float x, float y, float z)
-{
-    float c = cos(angle);
-    float s = sin(angle);
-    data[0] = c + (1 - c) * x * x;
-    data[1] = (1 - c) * x * y - s * z;
-    data[2] = (1 - c) * x * z + s * y;
-    data[4] = (1 - c) * x * y + s * z;
-    data[5] = c + (1 - c) * y * y;
-    data[6] = (1 - c) * y * z - s * x;
-    data[8] = (1 - c) * x * z - s * y;
-    data[9] = (1 - c) * y * z + s * x;
-    data[10] = c + (1 - c) * z * z;
-}
-
-void Matrix4D::translate(float x, float y, float z)
-{
-    data[3] = x;
-    data[7] = y;
-    data[11] = z;
-}
-
-void Matrix4D::scale(float x, float y, float z)
-{
-    data[0] *= x;
-    data[5] *= y;
-    data[10] *= z;
 }
 
 

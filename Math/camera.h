@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include "Math/matrix4d.h"
+#include "Math/transform.h"
 
 namespace LXY {
 
@@ -16,6 +17,10 @@ public:
 
     Matrix4D getOrtho(float left, float right, float top, float bottom, float far, float near);
 
+    Transform& getTransform();
+
+private:
+    Transform transform;
 };
 
 }

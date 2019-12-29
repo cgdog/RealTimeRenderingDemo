@@ -5,6 +5,10 @@ using namespace std;
 
 namespace LXY {
 
+/**
+ * @brief The Matrix4D class
+ * 为了方便观察(符合习惯)，这里实现的矩阵是按行优先存储的(row-major)的，但OpenGL内部要求按列存储(column-major)。
+ */
 class Matrix4D
 {
 public:

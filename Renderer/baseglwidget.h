@@ -24,9 +24,9 @@ public:
     virtual QSize minimumSizeHint() const override;
     virtual QSize sizeHint() const override;
     virtual void setClearColor(const QColor &color);
-    virtual void changeModel(const string& modelPath, bool isUpdateGL = true) = 0;
-    virtual void changeShaders(const QString& vsPath, const QString& fsPath, bool isUpdateGL = true) = 0;
-    virtual void changeModelAndShaders(const string& modelPath, const QString& vsPath, const QString& fsPath, bool isUpdateGL = true) = 0;
+    virtual void changeModel(const string& modelPath, bool isUpdateGL = true);
+    virtual void changeShaders(const QString& vsPath, const QString& fsPath, bool isUpdateGL = true);
+    virtual void changeModelAndShaders(const string& modelPath, const QString& vsPath, const QString& fsPath, bool isUpdateGL = true);
 
 protected:
     virtual void initializeGL() override = 0;

@@ -17,6 +17,9 @@ using namespace std;
 namespace LXY{
 
    #define PI 3.14159265f
+   float Epsilon();
+
+   bool isEqualZeroF(float f);
 
    QStringList OpenFileChooser(const QString &caption = QString(), const QString &directory = QString(), const QString &filter = QString(), bool canMultiFile = true);
 

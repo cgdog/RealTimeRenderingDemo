@@ -20,6 +20,7 @@ SOURCES += \
     Math/camera.cpp \
     Math/matrix4d.cpp \
     Math/transform.cpp \
+    Math/vector3.cpp \
     Models/model.cpp \
     Renderer/trianglequadrenderer.cpp \
     Renderer/baseglwidget.cpp \
@@ -33,6 +34,7 @@ HEADERS += \
     Math/camera.h \
     Math/matrix4d.h \
     Math/transform.h \
+    Math/vector3.h \
     Models/model.h \
     Renderer/trianglequadrenderer.h \
     Renderer/baseglwidget.h \

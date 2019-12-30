@@ -13,6 +13,41 @@ Camera::~Camera()
 
 }
 
+Matrix4D Camera::lookAt(const Vector3& pos, const Vector3& target, const Vector3& worldUp)
+{
+    Matrix4D viewMatrix;
+
+    cameraPos = pos;
+    cameraTarget = target;
+    cameraDirection = cameraPos - cameraTarget;
+    cameraDirection.normalize();
+    cameraRight = worldUp.cross(cameraDirection);
+    cameraRight.normalize();
+    cameraUp = cameraDirection.cross(cameraRight);
+
+    viewMatrix(0, 0) = cameraRight.X();
+    viewMatrix(0, 1) = cameraRight.Y();
+    viewMatrix(0, 2) = cameraRight.Z();
+    viewMatrix(0, 3) = -cameraRight.X() * cameraPos.X() - cameraRight.Y() * cameraPos.Y() - cameraRight.Z() * cameraPos.Z();
+
+    viewMatrix(1, 0) = cameraUp.X();
+    viewMatrix(1, 1) = cameraUp.Y();
+    viewMatrix(1, 2) = cameraUp.Z();
+    viewMatrix(1, 3) = -cameraUp.X() * cameraPos.X() - cameraUp.Y() * cameraPos.Y() - cameraUp.Z() * cameraPos.Z();
+
+    viewMatrix(2, 0) = cameraDirection.X();
+    viewMatrix(2, 1) = cameraDirection.Y();
+    viewMatrix(2, 2) = cameraDirection.Z();
+    viewMatrix(2, 3) = -cameraDirection.X() * cameraPos.X() - cameraDirection.Y() * cameraPos.Y() - cameraDirection.Z() * cameraPos.Z();
+
+    viewMatrix(3, 0) = 0;
+    viewMatrix(3, 1) = 0;
+    viewMatrix(3, 2) = 0;
+    viewMatrix(3, 3) = 1;
+
+    return viewMatrix;
+}
+
 Matrix4D Camera::getPerspective(float left, float right, float top, float bottom, float far, float near)
 {
     Matrix4D perspectiveTransform;

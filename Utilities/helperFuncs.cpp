@@ -1,5 +1,6 @@
 #include "helperFuncs.h"
 #include <ctype.h>
+#include <limits>
 
 namespace LXY{
 
@@ -116,6 +117,16 @@ namespace LXY{
     float radianToDegree(float radian)
     {
         return radian / PI * 180.0f;
+    }
+
+    float Epsilon()
+    {
+        return std::numeric_limits<float>::epsilon();
+    }
+
+    bool isEqualZeroF(float f)
+    {
+        return fabsf(f) <= std::numeric_limits<float>::epsilon();
     }
 
 }

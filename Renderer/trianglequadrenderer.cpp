@@ -15,6 +15,8 @@ TriangleQuadRenderer::~TriangleQuadRenderer()
 void TriangleQuadRenderer::initializeGL()
 {
     changeModelAndShaders(":/default.off", QString(":/default.vs"), QString(":/default.fs"), false);
+    _time.start();
+    lastTime = 0;
 }
 
 void TriangleQuadRenderer::resizeGL( int width, int height )
@@ -65,6 +67,10 @@ void TriangleQuadRenderer::paintGL()
 ///*
 void TriangleQuadRenderer::paintGL()
 {
+    int curTime = _time.elapsed();
+    int deltaTime = curTime - lastTime;
+    lastTime = curTime;
+
     QOpenGLFunctions *f = this->context()->functions();
     f->glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     f->glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -85,13 +91,19 @@ void TriangleQuadRenderer::paintGL()
     //m_shader->setUniformValue(matrixUniformLoc, matrix);
 
     //m_shader->setMat4("matrix", matrix);
+    const float radius = 2;
+    float camX = radius * static_cast<float>(cos(deltaTime));
+    float camZ = radius * static_cast<float>(sin(deltaTime));
+    Matrix4D viewMatrix = camera.lookAt(Vector3(camX, 0, camZ));
 
+    //Matrix4D viewMatrix = camera.lookAt();
     Matrix4D projection = camera.getPerspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
     Matrix4D rotationX = camera.getTransform().rotate(rotationFactor * xRot, 0, 1, 0);
     Matrix4D rotationY = camera.getTransform().rotate(rotationFactor * yRot, 1, 0, 0);
     Matrix4D translation = camera.getTransform().translate(0, 0, -2);
-    Matrix4D tmpMatrix = projection * translation * rotationY * rotationX;
+    //Matrix4D tmpMatrix = projection * translation * rotationY * rotationX;
     //Matrix4D tmpMatrix = projection * translation;
+    Matrix4D tmpMatrix = projection * viewMatrix * translation;
     int matrixUniformLoc = m_shader->getUniformLocation("matrix");
     // 关于行优先存储、列优先存储。OpenGL函数需要列优先存储的数据
     // https://blog.csdn.net/baiyu9821179/article/details/74852984

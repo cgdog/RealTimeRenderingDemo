@@ -13,7 +13,7 @@ public:
     Camera();
     ~Camera();
 
-    Matrix4D lookAt(const Vector3& pos, const Vector3& target, const Vector3& worldUp);
+    Matrix4D lookAt(const Vector3& pos=Vector3(0.0f, 0.0f, 3.0f), const Vector3& target=Vector3(0.0f, 0.0f, 0.0f), const Vector3& worldUp=Vector3(0.0, 1.0f, 0.0f));
 
     Matrix4D getPerspective(float left, float right, float top, float bottom, float far, float near);
     Matrix4D getPerspective(float verticalAngle, float aspectRatio, float near, float far);

@@ -2,6 +2,7 @@
 #define TRIANGLEQUADRENDERER_H
 
 #include "baseglwidget.h"
+#include <QTime>
 
 class TriangleQuadRenderer : public BaseGLWidget
 {
@@ -24,6 +25,8 @@ private:
     int xRot;
     int yRot;
     int zRot;
+    QTime _time;
+    int lastTime;
 };
 
 #endif // TRIANGLEQUADRENDERER_H

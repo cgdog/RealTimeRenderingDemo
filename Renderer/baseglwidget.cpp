@@ -6,7 +6,7 @@ using namespace LXY;
 BaseGLWidget::BaseGLWidget(QWidget *parent) : QOpenGLWidget(parent),
     m_vbo(nullptr), m_vao(nullptr), m_ebo(nullptr), m_shader(nullptr), clearColor(Qt::black)
 {
-
+    setFocusPolicy(Qt::StrongFocus);
 }
 
 BaseGLWidget::~BaseGLWidget()

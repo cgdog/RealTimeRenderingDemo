@@ -162,6 +162,13 @@ void Vector3::normalize()
     operator/(length());
 }
 
+Vector3 Vector3::normalized()
+{
+    Vector3 res(*this);
+    res.normalize();
+    return res;
+}
+
 float Vector3::length()
 {
     return sqrtf(x * x + y * y + z * z);
@@ -184,5 +191,20 @@ Vector3 Vector3::operator-(const Vector3& v)
     res.z = z - v.z;
     return res;
 }
+
+void Vector3::operator+=(const Vector3& v)
+{
+    x = x + v.x;
+    y = y + v.y;
+    z = z + v.z;
+}
+
+void Vector3::operator-=(const Vector3& v)
+{
+    x = x - v.x;
+    y = y - v.y;
+    z = z - v.z;
+}
+
 
 }

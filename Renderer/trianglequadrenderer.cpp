@@ -15,7 +15,7 @@ TriangleQuadRenderer::~TriangleQuadRenderer()
 void TriangleQuadRenderer::initializeGL()
 {
     changeModelAndShaders(":/default.off", QString(":/default.vs"), QString(":/default.fs"), false);
-    _time.start();
+    timeManaer.initialize();
     lastTime = 0;
 }
 
@@ -67,7 +67,7 @@ void TriangleQuadRenderer::paintGL()
 ///*
 void TriangleQuadRenderer::paintGL()
 {
-    int curTime = _time.elapsed();
+    int curTime = timeManaer.getTime();
     int deltaTime = curTime - lastTime;
     lastTime = curTime;
 
@@ -91,12 +91,13 @@ void TriangleQuadRenderer::paintGL()
     //m_shader->setUniformValue(matrixUniformLoc, matrix);
 
     //m_shader->setMat4("matrix", matrix);
-    const float radius = 2;
-    float camX = radius * static_cast<float>(cos(deltaTime));
-    float camZ = radius * static_cast<float>(sin(deltaTime));
-    Matrix4D viewMatrix = camera.lookAt(Vector3(camX, 0, camZ));
+//    const float radius = 2;
+//    float camX = radius * static_cast<float>(cos(deltaTime));
+//    float camZ = radius * static_cast<float>(sin(deltaTime));
+//    Matrix4D viewMatrix = camera.lookAt(Vector3(camX, 0, camZ));
 
-    //Matrix4D viewMatrix = camera.lookAt();
+    //Matrix4D viewMatrix = camera.lookAt(Vector3(-1, 0, -2));
+    Matrix4D viewMatrix = camera.lookAt();
     Matrix4D projection = camera.getPerspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
     Matrix4D rotationX = camera.getTransform().rotate(rotationFactor * xRot, 0, 1, 0);
     Matrix4D rotationY = camera.getTransform().rotate(rotationFactor * yRot, 1, 0, 0);
@@ -139,5 +140,31 @@ void TriangleQuadRenderer::mouseReleaseEvent(QMouseEvent *event)
 
 void TriangleQuadRenderer::mouseDoubleClickEvent(QMouseEvent *event)
 {
+}
+
+void TriangleQuadRenderer::keyPressEvent(QKeyEvent *event)
+{
+    log() << "keyboard event: " << event->key() << endl;
+    if (event->key() == Qt::Key_W)
+    {
+        camera.processKeyboard(Direction::UP);
+    }
+    else if (event->key() == Qt::Key_S)
+    {
+        camera.processKeyboard(Direction::DOWN);
+    }
+    else if (event->key() == Qt::Key_A)
+    {
+        camera.processKeyboard(Direction::LEFT);
+    }
+    else if (event->key() == Qt::Key_D)
+    {
+        camera.processKeyboard(Direction::RIGHT);
+    }
+    else
+    {
+        QWidget::keyPressEvent(event);
+    }
+    update();
 }
 

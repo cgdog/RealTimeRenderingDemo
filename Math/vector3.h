@@ -19,9 +19,14 @@ public:
     virtual Vector3 operator-(float scalar);
     virtual Vector3 operator+(const Vector3& v);
     virtual Vector3 operator-(const Vector3& v);
+
+    virtual void operator+=(const Vector3& v);
+    virtual void operator-=(const Vector3& v);
+
     virtual float& operator[](int index);
     virtual float operator[](int index) const;
     virtual void normalize();
+    virtual Vector3 normalized();
     virtual float length();
 
     float& X();

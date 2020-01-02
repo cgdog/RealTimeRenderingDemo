@@ -27,6 +27,7 @@ SOURCES += \
     Shaders/shader.cpp \
     Utilities/helperFuncs.cpp \
     Utilities/modelParser.cpp \
+    Utilities/timemanager.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -41,6 +42,7 @@ HEADERS += \
     Shaders/shader.h \
     Utilities/helperFuncs.h \
     Utilities/modelParser.h \
+    Utilities/timemanager.h \
     mainwindow.h
 
 # Default rules for deployment.

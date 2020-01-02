@@ -2,7 +2,8 @@
 #define TRIANGLEQUADRENDERER_H
 
 #include "baseglwidget.h"
-#include <QTime>
+#include "Utilities/timemanager.h"
+#include <QKeyEvent>
 
 class TriangleQuadRenderer : public BaseGLWidget
 {
@@ -19,13 +20,15 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 
+    void keyPressEvent(QKeyEvent *event) override;
+
 private:
     int m_frame;
     float rotationFactor = 0.02f;
     int xRot;
     int yRot;
     int zRot;
-    QTime _time;
+    LXY::TimeManager timeManaer;
     int lastTime;
 };
 

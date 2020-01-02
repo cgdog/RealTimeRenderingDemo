@@ -3,7 +3,7 @@
 namespace LXY {
 
 
-Camera::Camera()
+Camera::Camera() : cameraPos(Vector3(0, 0, -3)), cameraTarget(Vector3(0.0f, 0.0f, 0.0f)), cameraUp(Vector3(0.0, 1.0f, 0.0f))
 {
 
 }
@@ -46,6 +46,11 @@ Matrix4D Camera::lookAt(const Vector3& pos, const Vector3& target, const Vector3
     viewMatrix(3, 3) = 1;
 
     return viewMatrix;
+}
+
+Matrix4D Camera::lookAt()
+{
+    return lookAt(cameraPos, cameraTarget, cameraUp);
 }
 
 Matrix4D Camera::getPerspective(float left, float right, float top, float bottom, float far, float near)
@@ -94,6 +99,26 @@ Matrix4D Camera::getOrtho(float left, float right, float top, float bottom, floa
 Transform& Camera::getTransform()
 {
     return transform;
+}
+
+void Camera::processKeyboard(Direction dir)
+{
+    if (dir == Direction::UP)
+    {
+        cameraPos += cameraDirection;
+    }
+    else if (dir == Direction::DOWN)
+    {
+        cameraPos += cameraDirection;
+    }
+    else if (dir == Direction::LEFT)
+    {
+        cameraPos -= (cameraDirection.cross(cameraUp)).normalized();
+    }
+    else if (dir == Direction::RIGHT)
+    {
+        cameraPos += (cameraDirection.cross(cameraUp)).normalized();
+    }
 }
 
 }

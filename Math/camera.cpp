@@ -3,7 +3,10 @@
 namespace LXY {
 
 
-Camera::Camera() : cameraPos(Vector3(0, 0, -3)), cameraTarget(Vector3(0.0f, 0.0f, 0.0f)), cameraWorldUP(Vector3(0.0, 1.0f, 0.0f))
+Camera::Camera() : cameraPos(Vector3(0, 0, -3)), cameraTarget(Vector3(0.0f, 0.0f, 0.0f)),
+    cameraWorldUP(Vector3(0.0, 1.0f, 0.0f)), cameraDirection(Vector3(0.0f, 0.0f, -1.0f)),
+    yaw(YAW), pitch(PITCH), isLeftMouseButtonDown(false), mouseSensitivity(SENSITIVITY),
+    zoom(ZOOM), zoomSensitivity(ZOOMSENSITIVITY)
 {
 
 }
@@ -55,7 +58,7 @@ Matrix4D Camera::lookAt()
      Matrix4D viewMatrix;
 
     // test for keyboard input. Fixed directon.
-    cameraDirection = Vector3(0.0f, 0.0f, -1.0f);
+    //cameraDirection = Vector3(0.0f, 0.0f, -1.0f);
     cameraRight = cameraWorldUP.cross(cameraDirection);
     cameraRight.normalize();
     cameraUp = cameraDirection.cross(cameraRight);
@@ -112,6 +115,11 @@ Matrix4D Camera::getPerspective(float verticalAngle, float aspectRatio, float ne
     return perspectiveTransform;
 }
 
+Matrix4D Camera::getPerspective(float aspectRatio, float near, float far)
+{
+    return getPerspective(zoom, aspectRatio, near, far);
+}
+
 Matrix4D Camera::getOrtho(float left, float right, float top, float bottom, float far, float near)
 {
     Matrix4D orthoTransform;
@@ -152,6 +160,71 @@ void Camera::processKeyboard(Direction dir, int deltaTime)
     {
         cameraPos += (cameraDirection.cross(cameraUp)).normalized() * cameraSpeed;
     }
+}
+
+void Camera::updateMouseLeftButtonDown(bool isDown, float x, float y)
+{
+    isLeftMouseButtonDown = isDown;
+    if (isDown)
+    {
+        lastX = x;
+        lastY = y;
+    }
+}
+
+void Camera::processMouseMove(float x, float y, bool isConstrainPitch)
+{
+    if (isLeftMouseButtonDown)
+    {
+        float xOffset = x - lastX;
+        float yOffset = y - lastY;
+        xOffset *= mouseSensitivity;
+        yOffset *= mouseSensitivity;
+        lastX = x;
+        lastY = y;
+
+        yaw += xOffset;
+        pitch += yOffset;
+
+        if (isConstrainPitch)
+        {
+            if (pitch > 89.0f)
+            {
+                pitch = 89.0f;
+            }
+            if (pitch < -89.0f)
+            {
+                pitch = -89.0f;
+            }
+        }
+
+        updateCameraDirection();
+    }
+}
+
+void Camera::processMouseScroll(float yOffset)
+{
+    yOffset *= zoomSensitivity;
+    if (zoom >= MIN_ZOOM && zoom <= MAX_ZOOM)
+    {
+        zoom -= yOffset;
+    }
+    if (zoom <= MIN_ZOOM)
+    {
+        zoom = MIN_ZOOM;
+    }
+    if (zoom >= MAX_ZOOM)
+    {
+        zoom = MAX_ZOOM;
+    }
+}
+
+void Camera::updateCameraDirection()
+{
+    cameraDirection.X() = cos(degreeToRadian(yaw)) * cos(degreeToRadian(pitch));
+    cameraDirection.Y() = sin(degreeToRadian(pitch));
+    cameraDirection.Z() = sin(degreeToRadian(yaw)) * cos(degreeToRadian(pitch));
+    cameraDirection.normalize();
 }
 
 }

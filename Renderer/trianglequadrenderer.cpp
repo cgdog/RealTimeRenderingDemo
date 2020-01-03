@@ -99,7 +99,8 @@ void TriangleQuadRenderer::paintGL()
 
     //Matrix4D viewMatrix = camera.lookAt(Vector3(-1, 0, -2));
     Matrix4D viewMatrix = camera.lookAt();
-    Matrix4D projection = camera.getPerspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
+    //Matrix4D projection = camera.getPerspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
+    Matrix4D projection = camera.getPerspective(4.0f/3.0f, 0.1f, 100.0f);
     Matrix4D rotationX = camera.getTransform().rotate(rotationFactor * xRot, 0, 1, 0);
     Matrix4D rotationY = camera.getTransform().rotate(rotationFactor * yRot, 1, 0, 0);
     Matrix4D translation = camera.getTransform().translate(0, 0, -2);
@@ -124,24 +125,41 @@ void TriangleQuadRenderer::paintGL()
 }
 //*/
 
-void TriangleQuadRenderer::mousePressEvent(QMouseEvent* event) {
-   lastPos = event->pos();
+void TriangleQuadRenderer::mousePressEvent(QMouseEvent* event)
+{
+   //lastPos = event->pos();
+   camera.updateMouseLeftButtonDown(true, event->x(), event->y());
 }
 
-void TriangleQuadRenderer::mouseMoveEvent(QMouseEvent *event) {
-    QPoint curPos = event->pos();
-    QPoint deltPos = lastPos - curPos;
-    xRot -= deltPos.x();
-    yRot -= deltPos.y();
+void TriangleQuadRenderer::mouseMoveEvent(QMouseEvent *event)
+{
+//    QPoint curPos = event->pos();
+//    QPoint deltPos = lastPos - curPos;
+//    xRot -= deltPos.x();
+//    yRot -= deltPos.y();
+    camera.processMouseMove(event->x(), event->y());
     update();
 }
 
 void TriangleQuadRenderer::mouseReleaseEvent(QMouseEvent *event)
 {
+    camera.updateMouseLeftButtonDown(false, event->x(), event->y());
+}
+
+void TriangleQuadRenderer::wheelEvent(QWheelEvent* event)
+{
+    auto delta = event->angleDelta();
+    if (delta.isNull())
+    {
+        delta = event->pixelDelta();
+    }
+    camera.processMouseScroll(delta.y());
+    update();
 }
 
 void TriangleQuadRenderer::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event)
 }
 
 void TriangleQuadRenderer::keyPressEvent(QKeyEvent *event)

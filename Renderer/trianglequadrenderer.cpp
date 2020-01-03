@@ -68,7 +68,8 @@ void TriangleQuadRenderer::paintGL()
 void TriangleQuadRenderer::paintGL()
 {
     int curTime = timeManaer.getTime();
-    int deltaTime = curTime - lastTime;
+    deltaTime = curTime - lastTime;
+    log() << "--deltaTime=" << deltaTime << endl;
     lastTime = curTime;
 
     QOpenGLFunctions *f = this->context()->functions();
@@ -103,6 +104,7 @@ void TriangleQuadRenderer::paintGL()
     Matrix4D rotationY = camera.getTransform().rotate(rotationFactor * yRot, 1, 0, 0);
     Matrix4D translation = camera.getTransform().translate(0, 0, -2);
     //Matrix4D tmpMatrix = projection * translation * rotationY * rotationX;
+    //Matrix4D tmpMatrix = projection * viewMatrix * translation * rotationY * rotationX;
     //Matrix4D tmpMatrix = projection * translation;
     Matrix4D tmpMatrix = projection * viewMatrix * translation;
     int matrixUniformLoc = m_shader->getUniformLocation("matrix");
@@ -144,22 +146,22 @@ void TriangleQuadRenderer::mouseDoubleClickEvent(QMouseEvent *event)
 
 void TriangleQuadRenderer::keyPressEvent(QKeyEvent *event)
 {
-    log() << "keyboard event: " << event->key() << endl;
+    //log() << "keyboard event: " << event->key() << endl;
     if (event->key() == Qt::Key_W)
     {
-        camera.processKeyboard(Direction::UP);
+        camera.processKeyboard(Direction::UP, deltaTime);
     }
     else if (event->key() == Qt::Key_S)
     {
-        camera.processKeyboard(Direction::DOWN);
+        camera.processKeyboard(Direction::DOWN, deltaTime);
     }
     else if (event->key() == Qt::Key_A)
     {
-        camera.processKeyboard(Direction::LEFT);
+        camera.processKeyboard(Direction::LEFT, deltaTime);
     }
     else if (event->key() == Qt::Key_D)
     {
-        camera.processKeyboard(Direction::RIGHT);
+        camera.processKeyboard(Direction::RIGHT, deltaTime);
     }
     else
     {

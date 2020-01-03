@@ -30,6 +30,7 @@ private:
     int zRot;
     LXY::TimeManager timeManaer;
     int lastTime;
+    int deltaTime;
 };
 
 #endif // TRIANGLEQUADRENDERER_H

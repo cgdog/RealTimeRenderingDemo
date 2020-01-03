@@ -3,7 +3,7 @@
 namespace LXY {
 
 
-Camera::Camera() : cameraPos(Vector3(0, 0, -3)), cameraTarget(Vector3(0.0f, 0.0f, 0.0f)), cameraUp(Vector3(0.0, 1.0f, 0.0f))
+Camera::Camera() : cameraPos(Vector3(0, 0, -3)), cameraTarget(Vector3(0.0f, 0.0f, 0.0f)), cameraWorldUP(Vector3(0.0, 1.0f, 0.0f))
 {
 
 }
@@ -21,7 +21,9 @@ Matrix4D Camera::lookAt(const Vector3& pos, const Vector3& target, const Vector3
     cameraTarget = target;
     cameraDirection = cameraPos - cameraTarget;
     cameraDirection.normalize();
-    cameraRight = worldUp.cross(cameraDirection);
+
+    cameraWorldUP = worldUp;
+    cameraRight = cameraWorldUP.cross(cameraDirection);
     cameraRight.normalize();
     cameraUp = cameraDirection.cross(cameraRight);
 
@@ -50,7 +52,35 @@ Matrix4D Camera::lookAt(const Vector3& pos, const Vector3& target, const Vector3
 
 Matrix4D Camera::lookAt()
 {
-    return lookAt(cameraPos, cameraTarget, cameraUp);
+     Matrix4D viewMatrix;
+
+    // test for keyboard input. Fixed directon.
+    cameraDirection = Vector3(0.0f, 0.0f, -1.0f);
+    cameraRight = cameraWorldUP.cross(cameraDirection);
+    cameraRight.normalize();
+    cameraUp = cameraDirection.cross(cameraRight);
+
+    viewMatrix(0, 0) = cameraRight.X();
+    viewMatrix(0, 1) = cameraRight.Y();
+    viewMatrix(0, 2) = cameraRight.Z();
+    viewMatrix(0, 3) = -cameraRight.X() * cameraPos.X() - cameraRight.Y() * cameraPos.Y() - cameraRight.Z() * cameraPos.Z();
+
+    viewMatrix(1, 0) = cameraUp.X();
+    viewMatrix(1, 1) = cameraUp.Y();
+    viewMatrix(1, 2) = cameraUp.Z();
+    viewMatrix(1, 3) = -cameraUp.X() * cameraPos.X() - cameraUp.Y() * cameraPos.Y() - cameraUp.Z() * cameraPos.Z();
+
+    viewMatrix(2, 0) = cameraDirection.X();
+    viewMatrix(2, 1) = cameraDirection.Y();
+    viewMatrix(2, 2) = cameraDirection.Z();
+    viewMatrix(2, 3) = -cameraDirection.X() * cameraPos.X() - cameraDirection.Y() * cameraPos.Y() - cameraDirection.Z() * cameraPos.Z();
+
+    viewMatrix(3, 0) = 0;
+    viewMatrix(3, 1) = 0;
+    viewMatrix(3, 2) = 0;
+    viewMatrix(3, 3) = 1;
+
+    return viewMatrix;
 }
 
 Matrix4D Camera::getPerspective(float left, float right, float top, float bottom, float far, float near)
@@ -101,23 +131,26 @@ Transform& Camera::getTransform()
     return transform;
 }
 
-void Camera::processKeyboard(Direction dir)
+void Camera::processKeyboard(Direction dir, int deltaTime)
 {
+    float cameraSpeed = 0.1f;
+    cameraSpeed *= deltaTime + 1;
+    log() << "deltaTime=" << deltaTime << endl;
     if (dir == Direction::UP)
     {
-        cameraPos += cameraDirection;
+        cameraPos += cameraDirection * cameraSpeed;
     }
     else if (dir == Direction::DOWN)
     {
-        cameraPos += cameraDirection;
+        cameraPos -= cameraDirection * cameraSpeed;
     }
     else if (dir == Direction::LEFT)
     {
-        cameraPos -= (cameraDirection.cross(cameraUp)).normalized();
+        cameraPos -= (cameraDirection.cross(cameraUp)).normalized() * cameraSpeed;
     }
     else if (dir == Direction::RIGHT)
     {
-        cameraPos += (cameraDirection.cross(cameraUp)).normalized();
+        cameraPos += (cameraDirection.cross(cameraUp)).normalized() * cameraSpeed;
     }
 }
 

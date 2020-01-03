@@ -35,7 +35,7 @@ void Vector3::operator=(const Vector3& v)
 
 Vector3 Vector3::operator*(float scalar)
 {
-    Vector3 v;
+    Vector3 v(*this);
     v.x *= scalar;
     v.y *= scalar;
     v.z *= scalar;
@@ -45,7 +45,7 @@ Vector3 Vector3::operator*(float scalar)
 Vector3 Vector3::operator/(float scalar)
 {
     assert (!isEqualZeroF(scalar));
-    Vector3 v;
+    Vector3 v(*this);
     float reverse_scalar = 1.0f / scalar;
     v.x *= reverse_scalar;
     v.y *= reverse_scalar;
@@ -55,7 +55,7 @@ Vector3 Vector3::operator/(float scalar)
 
 Vector3 Vector3::operator+(float scalar)
 {
-    Vector3 v;
+    Vector3 v(*this);
     v.x += scalar;
     v.y += scalar;
     v.z += scalar;
@@ -64,7 +64,7 @@ Vector3 Vector3::operator+(float scalar)
 
 Vector3 Vector3::operator-(float scalar)
 {
-    Vector3 v;
+    Vector3 v(*this);
     v.x -= scalar;
     v.y -= scalar;
     v.z -= scalar;

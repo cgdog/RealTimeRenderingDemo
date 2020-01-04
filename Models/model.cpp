@@ -32,7 +32,7 @@ void Model::loadModel(const string& modelPath, bool isDefaultModel)
     vNormals.clear();
     if (isDefaultModel || isStartsWith(modelPath, ":/"))
     {
-        LXY::loadDefaultModel(modelPath, vertices, indices);
+        LXY::loadDefaultModel(modelPath, vertices, indices, vNormals);
     }
     else if (!isDefaultModel)
     {

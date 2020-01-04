@@ -154,8 +154,85 @@ namespace LXY {
         log() << "load obj model, faces size = " << indices.size() / 3 << endl;
     }
 
-    void loadDefaultModel(const string& modelPath, vector<float>& vertices, vector<int>& indices)
+    void loadDefaultModel(const string&  modelPath, vector<float>& vertices, vector<int>& indices, vector<float>& vNormals)
     {
+        if (isEndsWith(modelPath, ".off"))
+        {
+            loadDefaultOFFModel(modelPath, vertices, indices, vNormals);
+        }
+        else if (isEndsWith(modelPath, ".obj"))
+        {
+            loadDefaultOBJModel(modelPath, vertices, indices, vNormals);
+        }
+    }
+
+    void loadDefaultOBJModel(const string&  modelPath, vector<float>& vertices, vector<int>& indices, vector<float>& vNormals)
+    {
+        QFile file(QString(modelPath.c_str()));
+
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            logErr() << "error: load default model: " << modelPath << endl;
+            return;
+        }
+
+        while (!file.atEnd())
+        {
+            QByteArray bytes = file.readLine();
+            const char * line= bytes.constData();
+
+            if (line[0] == '#' || isspace(line[0]))
+            {
+                continue;
+            }
+            else if ('v' == line[0] && isspace(line[1]))
+            {
+                std::stringstream ss(line);
+                string flag;
+                float x, y , z;
+                ss >> flag >> x >> y >> z;
+                vertices.push_back(x);
+                vertices.push_back(y);
+                vertices.push_back(z);
+            }
+            else if ('v' == line[0] && 'n' == line[1])
+            {
+                std::stringstream ss(line);
+                string flag;
+                float x, y , z;
+                ss >> flag >> x >> y >> z;
+                vNormals.push_back(x);
+                vNormals.push_back(y);
+                vNormals.push_back(z);
+            }
+            else if ('f' == line[0])
+            {
+                std::stringstream ss(line);
+                string flag;
+                string numStr[3];
+
+                ss >> flag >> numStr[0] >> numStr[1] >> numStr[2];
+                for (int i = 0; i < 3; ++i)
+                {
+                    size_t pos = numStr[i].find('/');
+                    if (pos != string::npos)
+                    {
+                        int face = atoi(numStr[i].substr(0, pos).c_str());
+                        face -= 1;//obj indices stat with 1.
+                        indices.push_back(face);
+                    }
+                    else
+                    {
+                        logErr() << "The obj file format is wrong when parsing face data.\n";
+                    }
+                }
+            }
+        }
+    }
+
+    void loadDefaultOFFModel(const string& modelPath, vector<float>& vertices, vector<int>& indices, vector<float>& vNormals)
+    {
+        Q_UNUSED(vNormals)
         QFile file(QString(modelPath.c_str()));
 
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -216,12 +293,13 @@ namespace LXY {
                     }
                     else
                     { // 暂时忽略边edges
-                        file.close();
-                        return;
+
                     }
                 }
             }
 
         }
+        file.close();
+        return;
     }
 }

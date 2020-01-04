@@ -36,7 +36,9 @@ BaseGLWidget::~BaseGLWidget()
 
 void BaseGLWidget::initializeGL()
 {
-    changeModelAndShaders(":/default.off", QString(":/default.vs"), QString(":/default.fs"), false);
+    //changeModelAndShaders(":/default.off", QString(":/default.vs"), QString(":/default.fs"), false);
+    //changeModelAndShaders(":/quad.off", QString(":/quad.vs"), QString(":/quad.fs"), false);
+    changeModelAndShaders(":/triangle.off", QString(":/triangle.vs"), QString(":/triangle.fs"), false);
     timeManaer.initialize();
     lastTime = 0;
 }

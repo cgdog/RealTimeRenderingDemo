@@ -40,7 +40,7 @@ void MainWindow::processMenu()
 
 void MainWindow::onClickLoadModelAndShaders()
 {
-    QStringList files = LXY::OpenFileChooser(tr("选择模型和shader文件"), tr("../RealTimeRenderingDemo/DefaultModels"), tr("(*.off *.vs *.fs)"));
+    QStringList files = LXY::OpenFileChooser(tr("选择模型和shader文件"), tr("../RealTimeRenderingDemo/DefaultModels"), tr("(*.off *.obj *.vs *.fs)"));
     string modelPath;
     QString vsPath;
     QString fsPath;
@@ -65,7 +65,7 @@ void MainWindow::onClickLoadModelAndShaders()
 
 void MainWindow::onClickLoadModel()
 {
-    QStringList modelFiles = LXY::OpenFileChooser(tr("选择模型文件"), tr("../RealTimeRenderingDemo/DefaultModels"), tr("(*.off)"), false);
+    QStringList modelFiles = LXY::OpenFileChooser(tr("选择模型文件"), tr("../RealTimeRenderingDemo/DefaultModels"), tr("(*.off *.obj)"), false);
      for (auto filePath : modelFiles) {
          this->glWidget->changeModel(filePath.toStdString());
      }

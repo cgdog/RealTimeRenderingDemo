@@ -1,44 +1,61 @@
 #include "model.h"
 #include "Utilities/modelParser.h"
 
-namespace LXY {
+namespace LXY
+{
 
-Model::Model(){
-    //loadModel(":/default.off", true);
+Model::Model()
+{
 }
 
 
-Model::Model(const string& modelPath) {
+Model::Model(const string& modelPath)
+{
     log() << modelPath << endl;
     loadModel(modelPath);
 }
 
-Model::~Model() {
+Model::~Model()
+{
 }
 
-void Model::loadModel(string modelPath, bool isDefaultModel) {
-    if (modelPath.empty()) {
+void Model::loadModel(const string& modelPath, bool isDefaultModel)
+{
+    if (modelPath.empty())
+    {
         logErr()<< "error: modelPath is empty." << endl;
         return;
     }
 
     vertices.clear();
     indices.clear();
-    if (isDefaultModel || isStartsWith(modelPath, ":/")) {
+    vNormals.clear();
+    if (isDefaultModel || isStartsWith(modelPath, ":/"))
+    {
         LXY::loadDefaultModel(modelPath, vertices, indices);
-    } else if (!isDefaultModel) {
-        LXY::loadModel(modelPath, vertices, indices);
+    }
+    else if (!isDefaultModel)
+    {
+        LXY::loadModel(modelPath, vertices, indices, vNormals);
     }
 }
 
-void Model::cleanModel() {
+void Model::cleanModel()
+{
 }
 
-vector<float>& Model::getVertices() {
+vector<float>& Model::getVertices()
+{
     return vertices;
 }
-vector<int>& Model::getIndices() {
+vector<int>& Model::getIndices()
+{
     return indices;
+}
+
+vector<float>& Model::getVertexNormals()
+{
+    return vNormals;
 }
 
 

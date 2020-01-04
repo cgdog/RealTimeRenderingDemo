@@ -32,7 +32,7 @@ public:
 
 protected:
     virtual void initializeGL() override;
-    virtual void resizeGL( int width, int height);
+    virtual void resizeGL( int width, int height) override;
     virtual void paintGL() override;
 
     virtual void mousePressEvent(QMouseEvent* event) override;

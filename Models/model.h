@@ -19,9 +19,10 @@ public:
     Model(const string& modelPath);
     ~Model();
 
-    void loadModel(string modelPath,  bool isDefaultModel = false);
+    void loadModel(const string& modelPath,  bool isDefaultModel = false);
 
     vector<float>& getVertices();
+    vector<float>& getVertexNormals();
     vector<int>& getIndices();
 
     Transform& getTransform();
@@ -32,6 +33,7 @@ protected:
 protected:
 
     vector<float> vertices;
+    vector<float> vNormals;
     vector<int> indices;
 
     Transform transform;

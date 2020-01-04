@@ -71,7 +71,8 @@ void BaseGLWidget::paintGL()
     // So I set the third parameter to GL_TRUE.
     f->glUniformMatrix4fv(matrixUniformLoc, 1, GL_TRUE, tmpMatrix.getData());
 
-    f->glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(model.getIndices().size()), GL_UNSIGNED_INT, nullptr);
+    GLsizei numFaceIndices = static_cast<GLsizei>(model.getIndices().size());
+    f->glDrawElements(GL_TRIANGLES, numFaceIndices, GL_UNSIGNED_INT, nullptr);
     m_shader->release();
     m_ebo->release();
     m_vao->release();

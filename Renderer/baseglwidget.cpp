@@ -4,7 +4,8 @@
 using namespace LXY;
 
 BaseGLWidget::BaseGLWidget(QWidget *parent) : QOpenGLWidget(parent),
-    m_vbo(nullptr), m_vao(nullptr), m_ebo(nullptr), m_shader(nullptr), clearColor(Qt::black)
+    m_vbo(nullptr), m_vao(nullptr), m_ebo(nullptr), m_shader(nullptr),
+    clearColor(Qt::black), xRot(0), yRot(0), zRot(0)
 {
     setFocusPolicy(Qt::StrongFocus);
 }
@@ -33,6 +34,60 @@ BaseGLWidget::~BaseGLWidget()
 
 }
 
+void BaseGLWidget::initializeGL()
+{
+    changeModelAndShaders(":/default.off", QString(":/default.vs"), QString(":/default.fs"), false);
+    timeManaer.initialize();
+    lastTime = 0;
+}
+
+void BaseGLWidget::paintGL()
+{
+    int curTime = timeManaer.getTime();
+    deltaTime = curTime - lastTime;
+    //log() << "--deltaTime=" << deltaTime << endl;
+    lastTime = curTime;
+
+    QOpenGLFunctions *f = this->context()->functions();
+    f->glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    f->glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    m_vao->bind();
+    m_ebo->bind();
+    m_shader->bind();
+
+
+    Matrix4D viewMatrix = camera.lookAt();
+    //Matrix4D projection = camera.getPerspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
+    Matrix4D projection = camera.getPerspective(4.0f/3.0f, 0.1f, 100.0f);
+    //Matrix4D rotationX = camera.getTransform().rotate(rotationFactor * xRot, 0, 1, 0);
+    //Matrix4D rotationY = camera.getTransform().rotate(rotationFactor * yRot, 1, 0, 0);
+    Matrix4D translation = camera.getTransform().translate(0, 0, -2);
+    //Matrix4D tmpMatrix = projection * translation * rotationY * rotationX;
+    //Matrix4D tmpMatrix = projection * viewMatrix * translation * rotationY * rotationX;
+    //Matrix4D tmpMatrix = projection * translation;
+    Matrix4D tmpMatrix = projection * viewMatrix * translation;
+    int matrixUniformLoc = m_shader->getUniformLocation("matrix");
+    // The matrices in OpenGL are column-major. Note: the LXY::Matrix4D implemented here is row-major matrix.
+    // So I set the third parameter to GL_TRUE.
+    f->glUniformMatrix4fv(matrixUniformLoc, 1, GL_TRUE, tmpMatrix.getData());
+
+    f->glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(model.getIndices().size()), GL_UNSIGNED_INT, nullptr);
+    m_shader->release();
+    m_ebo->release();
+    m_vao->release();
+
+    this->context()->swapBuffers(this->context()->surface());
+}
+
+void BaseGLWidget::resizeGL( int width, int height )
+{
+//    int side = qMin(width, height);
+//    glViewport((width - side)/2, (height - side) / 2, side, side);
+
+    Q_UNUSED(width)
+    Q_UNUSED(height)
+}
+
 QSize BaseGLWidget::minimumSizeHint() const
 {
     return QSize(640, 480);
@@ -49,20 +104,61 @@ void BaseGLWidget::setClearColor(const QColor &color)
     update();
 }
 
-void BaseGLWidget::mousePressEvent(QMouseEvent* event) {
-    log() << "mousePressEvent: x=" << event->x() << " y=" << event->y() << endl;
+void BaseGLWidget::mousePressEvent(QMouseEvent* event)
+{
+   camera.updateMouseLeftButtonDown(true, event->x(), event->y());
 }
 
-void BaseGLWidget::mouseMoveEvent(QMouseEvent *event) {
-    log() << "mouseMoveEvent: x=" << event->x() << " y=" << event->y() << endl;
+void BaseGLWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    camera.processMouseMove(event->x(), event->y());
+    update();
 }
 
-void BaseGLWidget::mouseReleaseEvent(QMouseEvent *event) {
-    log() << "mouseReleaseEvent: x=" << event->x() << " y=" << event->y() << endl;
+void BaseGLWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    camera.updateMouseLeftButtonDown(false, event->x(), event->y());
 }
 
-void BaseGLWidget::mouseDoubleClickEvent(QMouseEvent *event) {
-    log() << "mouseDoubleClickEvent: x=" << event->x() << " y=" << event->y() << endl;
+void BaseGLWidget::wheelEvent(QWheelEvent* event)
+{
+    auto delta = event->angleDelta();
+    if (delta.isNull())
+    {
+        delta = event->pixelDelta();
+    }
+    camera.processMouseScroll(delta.y());
+    update();
+}
+
+void BaseGLWidget::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event)
+}
+
+void BaseGLWidget::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_W)
+    {
+        camera.processKeyboard(Direction::UP, deltaTime);
+    }
+    else if (event->key() == Qt::Key_S)
+    {
+        camera.processKeyboard(Direction::DOWN, deltaTime);
+    }
+    else if (event->key() == Qt::Key_A)
+    {
+        camera.processKeyboard(Direction::LEFT, deltaTime);
+    }
+    else if (event->key() == Qt::Key_D)
+    {
+        camera.processKeyboard(Direction::RIGHT, deltaTime);
+    }
+    else
+    {
+        QWidget::keyPressEvent(event);
+    }
+    update();
 }
 
 void BaseGLWidget::changeModel(const string& modelPath, bool isUpdateGL)

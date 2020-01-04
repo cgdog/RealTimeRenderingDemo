@@ -72,6 +72,8 @@ private:
     float zoom;
 
     bool isLeftMouseButtonDown;
+
+    float cameraSpeed;
 };
 
 }

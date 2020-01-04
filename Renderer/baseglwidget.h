@@ -13,6 +13,8 @@
 #include <string>
 #include "Shaders/shader.h"
 #include "Math/camera.h"
+#include "Utilities/timemanager.h"
+
 using std::string;
 
 class BaseGLWidget : public QOpenGLWidget
@@ -29,14 +31,17 @@ public:
     virtual void changeModelAndShaders(const string& modelPath, const QString& vsPath, const QString& fsPath, bool isUpdateGL = true);
 
 protected:
-    virtual void initializeGL() override = 0;
-    virtual void resizeGL( int width, int height ) override = 0;
-    virtual void paintGL() override = 0;
+    virtual void initializeGL() override;
+    virtual void resizeGL( int width, int height);
+    virtual void paintGL() override;
 
     virtual void mousePressEvent(QMouseEvent* event) override;
     virtual void mouseMoveEvent(QMouseEvent *event) override;
     virtual void mouseReleaseEvent(QMouseEvent *event) override;
     virtual void mouseDoubleClickEvent(QMouseEvent *event) override;
+    void wheelEvent(QWheelEvent* event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+
 
 protected slots:
 
@@ -54,6 +59,15 @@ protected:
     QPoint lastPos;
 
     Camera camera;
+
+    LXY::TimeManager timeManaer;
+    int deltaTime;
+    int lastTime;
+
+    float rotationFactor = 0.02f;
+    int xRot;
+    int yRot;
+    int zRot;
 };
 
 #endif // BASEGLWIDGET_H

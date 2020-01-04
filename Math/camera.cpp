@@ -6,7 +6,7 @@ namespace LXY {
 Camera::Camera() : cameraPos(Vector3(0, 0, -3)), cameraTarget(Vector3(0.0f, 0.0f, 0.0f)),
     cameraWorldUP(Vector3(0.0, 1.0f, 0.0f)), cameraDirection(Vector3(0.0f, 0.0f, -1.0f)),
     yaw(YAW), pitch(PITCH), isLeftMouseButtonDown(false), mouseSensitivity(SENSITIVITY),
-    zoom(ZOOM), zoomSensitivity(ZOOMSENSITIVITY)
+    zoom(ZOOM), zoomSensitivity(ZOOMSENSITIVITY), cameraSpeed(0.1f)
 {
 
 }
@@ -55,10 +55,8 @@ Matrix4D Camera::lookAt(const Vector3& pos, const Vector3& target, const Vector3
 
 Matrix4D Camera::lookAt()
 {
-     Matrix4D viewMatrix;
+    Matrix4D viewMatrix;
 
-    // test for keyboard input. Fixed directon.
-    //cameraDirection = Vector3(0.0f, 0.0f, -1.0f);
     cameraRight = cameraWorldUP.cross(cameraDirection);
     cameraRight.normalize();
     cameraUp = cameraDirection.cross(cameraRight);
@@ -141,9 +139,9 @@ Transform& Camera::getTransform()
 
 void Camera::processKeyboard(Direction dir, int deltaTime)
 {
-    float cameraSpeed = 0.1f;
-    cameraSpeed *= deltaTime + 1;
-    log() << "deltaTime=" << deltaTime << endl;
+    Q_UNUSED(deltaTime)
+    //cameraSpeed *= deltaTime + 0.1f;
+    //log() << "deltaTime=" << deltaTime << endl;
     if (dir == Direction::UP)
     {
         cameraPos += cameraDirection * cameraSpeed;
@@ -183,8 +181,8 @@ void Camera::processMouseMove(float x, float y, bool isConstrainPitch)
         lastX = x;
         lastY = y;
 
-        yaw += xOffset;
-        pitch += yOffset;
+        yaw -= xOffset;
+        pitch -= yOffset;
 
         if (isConstrainPitch)
         {

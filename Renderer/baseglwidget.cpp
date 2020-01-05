@@ -39,6 +39,7 @@ void BaseGLWidget::initializeGL()
     //changeModelAndShaders(":/default.off", QString(":/default.vs"), QString(":/default.fs"), false);
     //changeModelAndShaders(":/quad.off", QString(":/quad.vs"), QString(":/quad.fs"), false);
     changeModelAndShaders(":/triangle.off", QString(":/triangle.vs"), QString(":/triangle.fs"), false);
+    //changeModelAndShaders(":/horse-gallop-01.obj", QString(":/horse-gallop-01.vs"), QString(":/horse-gallop-01.fs"), false);
     timeManaer.initialize();
     lastTime = 0;
 }
@@ -53,6 +54,10 @@ void BaseGLWidget::paintGL()
     QOpenGLFunctions *f = this->context()->functions();
     f->glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     f->glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+    f->glEnable(GL_DEPTH_TEST);
+    //f->glEnable(GL_CULL_FACE);
+
     m_vao->bind();
     m_ebo->bind();
     m_shader->bind();
@@ -182,14 +187,14 @@ void BaseGLWidget::changeModel(const string& modelPath, bool isUpdateGL)
     {
         m_vbo = new QOpenGLBuffer(QOpenGLBuffer::Type::VertexBuffer);
     } else if (m_vbo->isCreated()) {
-        m_vbo->destroy();
+        //m_vbo->destroy();
     }
 
     if (nullptr == m_ebo)
     {
         m_ebo = new QOpenGLBuffer(QOpenGLBuffer::Type::IndexBuffer);
     } else if (m_ebo->isCreated()) {
-        m_ebo->destroy();
+        //m_ebo->destroy();
     }
 
     if (!m_vao->isCreated())

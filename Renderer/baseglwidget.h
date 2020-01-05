@@ -21,7 +21,7 @@ class BaseGLWidget : public QOpenGLWidget
 {
     Q_OBJECT
 public:
-    BaseGLWidget(QWidget *parent=0);
+    BaseGLWidget(QWidget *parent=nullptr);
     virtual ~BaseGLWidget() override;
     virtual QSize minimumSizeHint() const override;
     virtual QSize sizeHint() const override;

@@ -54,7 +54,7 @@ void MainWindow::onClickLoadModelAndShaders()
         {
             fsPath = filePath;
         }
-        else if (filePath.endsWith(".off"))
+        else if (filePath.endsWith(".off") || filePath.endsWith(".obj"))
         {
             modelPath = filePath.toStdString();
         }

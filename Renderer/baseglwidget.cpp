@@ -56,7 +56,9 @@ void BaseGLWidget::paintGL()
     f->glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     f->glEnable(GL_DEPTH_TEST);
-    //f->glEnable(GL_CULL_FACE);
+//    f->glEnable(GL_CULL_FACE);
+//    //f->glCullFace(GL_BACK);
+//    f->glCullFace(GL_FRONT);
 
     m_vao->bind();
     m_ebo->bind();

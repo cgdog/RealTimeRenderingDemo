@@ -40,10 +40,14 @@ public:
     void setPos(const Vector3& pos);
     void setWorldUp(const Vector3& worldup);
     void setCameraDirection(const Vector3& _cameraDirection);
+    void setYaw(float _yaw);
+    void setPitch(float _pitch);
 
     Vector3 getPos();
     Vector3 getWorldUp();
     Vector3 getCameraDirection();
+    float getYaw();
+    float getPitch();
 
 private:
     void updateCameraDirection();

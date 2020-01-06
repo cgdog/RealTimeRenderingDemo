@@ -225,7 +225,7 @@ void BaseGLWidget::changeModel(const string& modelPath, bool isUpdateGL)
     m_ebo->release();
     m_vao->release();
 
-    //loadViewMatrixByModelPath(modelPath);
+    loadViewMatrixByModelPath(modelPath);
     if (isUpdateGL)
     {
         update();
@@ -248,7 +248,6 @@ void BaseGLWidget::changeShaders(const QString& vsPath, const QString& fsPath, b
 void BaseGLWidget::changeModelAndShaders(const string& modelPath, const QString& vsPath, const QString& fsPath, bool isUpdateGL)
 {
     changeModel(modelPath, false);
-    //loadViewMatrixByModelPath(modelPath);
     changeShaders(vsPath, fsPath, false);
     if (isUpdateGL)
     {
@@ -291,7 +290,15 @@ void BaseGLWidget::loadViewMatrix(const string& path)
         }
         stringstream ss(line);
         Vector3 v3;
-        ss >> v3.X() >> v3.Y() >> v3.Z();
+        float eulerAngle(0.0f);
+        if (flag >= 0 && flag < 3)
+        {
+            ss >> v3.X() >> v3.Y() >> v3.Z();
+        }
+        else
+        {
+            ss >> eulerAngle;
+        }
         switch (flag)
         {
         case 0:
@@ -302,6 +309,12 @@ void BaseGLWidget::loadViewMatrix(const string& path)
             break;
         case 2:
             camera.setCameraDirection(v3);
+            break;
+        case 3:
+            camera.setYaw(eulerAngle);
+            break;
+        case 4:
+            camera.setPitch(eulerAngle);
             break;
         }
 
@@ -328,12 +341,17 @@ void BaseGLWidget::saveViewMatrix()
     }
 
     ofstream fout(viewMatrixPath);
-    fout << "# camera view matrix parameters: cameraPos, cameraWorldUp, cameraDirection." << endl;
+    fout << "# camera view matrix parameters: "
+            "cameraPos, cameraWorldUp, cameraDirection, yaw, pitch." << endl;
     auto cameraPos = camera.getPos();
     fout << cameraPos.X() << " " << cameraPos.Y() << " " << cameraPos.Z() << endl;
     auto cameraWorldUp = camera.getWorldUp();
     fout << cameraWorldUp.X() << " " << cameraWorldUp.Y() << " " << cameraWorldUp.Z() << endl;
     auto cameraDirection = camera.getCameraDirection();
     fout << cameraDirection.X() << " " << cameraDirection.Y() << " " << cameraDirection.Z() << endl;
+    float yaw = camera.getYaw();
+    float pitch = camera.getPitch();
+    fout << yaw << endl;
+    fout << pitch << endl;
     fout.close();
 }

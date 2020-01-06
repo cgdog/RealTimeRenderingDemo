@@ -240,6 +240,16 @@ void Camera::setCameraDirection(const Vector3& _cameraDirection)
     this->cameraDirection = _cameraDirection;
 }
 
+void Camera::setYaw(float _yaw)
+{
+    yaw = _yaw;
+}
+
+void Camera::setPitch(float _pitch)
+{
+    pitch = _pitch;
+}
+
 Vector3 Camera::getPos()
 {
     return cameraPos;
@@ -254,5 +264,16 @@ Vector3 Camera::getCameraDirection()
 {
     return cameraDirection;
 }
+
+float Camera::getYaw()
+{
+    return yaw;
+}
+
+float Camera::getPitch()
+{
+    return pitch;
+}
+
 
 }

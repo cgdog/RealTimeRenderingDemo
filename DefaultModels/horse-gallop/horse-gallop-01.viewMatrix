@@ -1,4 +1,6 @@
-# camera view matrix parameters: cameraPos, cameraWorldUp, cameraDirection.
--0.843713 -5.21541e-09 -2.1474
+# camera view matrix parameters: cameraPos, cameraWorldUp, cameraDirection, yaw, pitch.
+-1.25247 1.86265e-09 -2.10285
 0 1 0
--0.943297 -0.323917 -0.0725819
+-0.9668 -0.255446 -0.00674846
+-179.6
+-14.8

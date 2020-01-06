@@ -9,34 +9,36 @@ Model::Model()
 }
 
 
-Model::Model(const string& modelPath)
+Model::Model(const string& _modelPath)
 {
-    log() << modelPath << endl;
-    loadModel(modelPath);
+    log() << _modelPath << endl;
+    loadModel(_modelPath);
 }
 
 Model::~Model()
 {
 }
 
-void Model::loadModel(const string& modelPath, bool isDefaultModel)
+void Model::loadModel(const string& _modelPath, bool isDefaultModel)
 {
-    if (modelPath.empty())
+    if (_modelPath.empty())
     {
         logErr()<< "error: modelPath is empty." << endl;
         return;
     }
 
+    this->modelPath = _modelPath;
+
     vertices.clear();
     indices.clear();
     vNormals.clear();
-    if (isDefaultModel || isStartsWith(modelPath, ":/"))
+    if (isDefaultModel || isStartsWith(_modelPath, ":/"))
     {
-        LXY::loadDefaultModel(modelPath, vertices, indices, vNormals);
+        LXY::loadDefaultModel(_modelPath, vertices, indices, vNormals);
     }
     else if (!isDefaultModel)
     {
-        LXY::loadModel(modelPath, vertices, indices, vNormals);
+        LXY::loadModel(_modelPath, vertices, indices, vNormals);
     }
 }
 
@@ -62,6 +64,11 @@ vector<float>& Model::getVertexNormals()
 Transform& Model::getTransform()
 {
     return transform;
+}
+
+string Model::getModelPath()
+{
+    return this->modelPath;
 }
 
 }

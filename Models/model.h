@@ -27,6 +27,8 @@ public:
 
     Transform& getTransform();
 
+    string getModelPath();
+
 protected:
     void cleanModel();
 
@@ -37,6 +39,9 @@ protected:
     vector<int> indices;
 
     Transform transform;
+
+private:
+    string modelPath;
 };
 
 }

@@ -37,6 +37,14 @@ public:
     void processMouseMove(float x, float y, bool isConstrainPitch = true);
     void processMouseScroll(float yOffset);
 
+    void setPos(const Vector3& pos);
+    void setWorldUp(const Vector3& worldup);
+    void setCameraDirection(const Vector3& _cameraDirection);
+
+    Vector3 getPos();
+    Vector3 getWorldUp();
+    Vector3 getCameraDirection();
+
 private:
     void updateCameraDirection();
 

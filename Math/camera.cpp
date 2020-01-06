@@ -225,4 +225,34 @@ void Camera::updateCameraDirection()
     cameraDirection.normalize();
 }
 
+void Camera::setPos(const Vector3& pos)
+{
+    this->cameraPos = pos;
+}
+
+void Camera::setWorldUp(const Vector3& worldup)
+{
+    this->cameraWorldUP = worldup;
+}
+
+void Camera::setCameraDirection(const Vector3& _cameraDirection)
+{
+    this->cameraDirection = _cameraDirection;
+}
+
+Vector3 Camera::getPos()
+{
+    return cameraPos;
+}
+
+Vector3 Camera::getWorldUp()
+{
+    return cameraWorldUP;
+}
+
+Vector3 Camera::getCameraDirection()
+{
+    return cameraDirection;
+}
+
 }

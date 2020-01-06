@@ -29,6 +29,9 @@ public:
     virtual void changeModel(const string& modelPath, bool isUpdateGL = true);
     virtual void changeShaders(const QString& vsPath, const QString& fsPath, bool isUpdateGL = true);
     virtual void changeModelAndShaders(const string& modelPath, const QString& vsPath, const QString& fsPath, bool isUpdateGL = true);
+    virtual void loadViewMatrix(const string& path);
+    void loadViewMatrixByModelPath(const string& modelPath);
+    virtual void saveViewMatrix();
 
 protected:
     virtual void initializeGL() override;

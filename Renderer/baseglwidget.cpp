@@ -224,6 +224,8 @@ void BaseGLWidget::changeModel(const string& modelPath, bool isUpdateGL)
     m_vbo->release();
     m_ebo->release();
     m_vao->release();
+
+    //loadViewMatrixByModelPath(modelPath);
     if (isUpdateGL)
     {
         update();
@@ -246,9 +248,92 @@ void BaseGLWidget::changeShaders(const QString& vsPath, const QString& fsPath, b
 void BaseGLWidget::changeModelAndShaders(const string& modelPath, const QString& vsPath, const QString& fsPath, bool isUpdateGL)
 {
     changeModel(modelPath, false);
+    //loadViewMatrixByModelPath(modelPath);
     changeShaders(vsPath, fsPath, false);
     if (isUpdateGL)
     {
         update();
     }
+}
+
+void BaseGLWidget::loadViewMatrixByModelPath(const string& modelPath)
+{
+    size_t pos = modelPath.find(".off");
+    if (string::npos == pos)
+    {
+        pos = modelPath.find(".obj");
+    }
+    string viewMatrixPath = modelPath.substr(0, pos);
+    viewMatrixPath += ".viewMatrix";
+    if (isStartsWith(viewMatrixPath, ":/"))
+    {
+        //viewMatrixPath[0] = '.';
+        return;
+    }
+    loadViewMatrix(viewMatrixPath);
+}
+
+void BaseGLWidget::loadViewMatrix(const string& path)
+{
+    ifstream fin(path);
+    if (!fin.good())
+    {
+        //logErr() << "Error: " << path << " is not a good view matrix file path." << endl;
+        return;
+    }
+    string line;
+    int flag = 0;
+    while (getline(fin, line))
+    {
+        if ('#' == line[0])
+        {
+            continue;
+        }
+        stringstream ss(line);
+        Vector3 v3;
+        ss >> v3.X() >> v3.Y() >> v3.Z();
+        switch (flag)
+        {
+        case 0:
+            camera.setPos(v3);
+            break;
+        case 1:
+            camera.setWorldUp(v3);
+            break;
+        case 2:
+            camera.setCameraDirection(v3);
+            break;
+        }
+
+        ++flag;
+    }
+    fin.close();
+    update();
+}
+
+void BaseGLWidget::saveViewMatrix()
+{
+
+    string modelPath = model.getModelPath();
+    size_t pos = modelPath.find(".off");
+    if (string::npos == pos)
+    {
+        pos = modelPath.find(".obj");
+    }
+    string viewMatrixPath = modelPath.substr(0, pos);
+    viewMatrixPath += ".viewMatrix";
+    if (isStartsWith(viewMatrixPath, ":/"))
+    {
+        viewMatrixPath[0] = '.';
+    }
+
+    ofstream fout(viewMatrixPath);
+    fout << "# camera view matrix parameters: cameraPos, cameraWorldUp, cameraDirection." << endl;
+    auto cameraPos = camera.getPos();
+    fout << cameraPos.X() << " " << cameraPos.Y() << " " << cameraPos.Z() << endl;
+    auto cameraWorldUp = camera.getWorldUp();
+    fout << cameraWorldUp.X() << " " << cameraWorldUp.Y() << " " << cameraWorldUp.Z() << endl;
+    auto cameraDirection = camera.getCameraDirection();
+    fout << cameraDirection.X() << " " << cameraDirection.Y() << " " << cameraDirection.Z() << endl;
+    fout.close();
 }

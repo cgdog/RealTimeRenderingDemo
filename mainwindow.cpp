@@ -31,6 +31,8 @@ void MainWindow::processMenu()
         fileMenu->addAction("Load &Model and Shaders", this, SLOT(onClickLoadModelAndShaders()));
         fileMenu->addAction("&Load Model", this, SLOT(onClickLoadModel()));
         fileMenu->addAction("Load &Shaders", this, SLOT(onClickLoadShaders()));
+        fileMenu->addAction("Load View Matrix", this, SLOT(onLoadViewMatrix()));
+        fileMenu->addAction("Save View Matrix", this, SLOT(onSaveViewMatrix()));
 
         // for test.
         auto testMenu = mb->addMenu(tr("&Test"));
@@ -66,9 +68,10 @@ void MainWindow::onClickLoadModelAndShaders()
 void MainWindow::onClickLoadModel()
 {
     QStringList modelFiles = LXY::OpenFileChooser(tr("选择模型文件"), tr("../RealTimeRenderingDemo/DefaultModels"), tr("(*.off *.obj)"), false);
-     for (auto filePath : modelFiles) {
+    for (auto filePath : modelFiles) {
+        string modelPath = filePath.toStdString();
          this->glWidget->changeModel(filePath.toStdString());
-     }
+    }
 }
 
 void MainWindow::onClickLoadShaders()
@@ -102,4 +105,18 @@ void MainWindow::onClickTestMatrix()
     cout << mat4;
     //fin.close();
     fout.close();
+}
+
+
+void MainWindow::onLoadViewMatrix()
+{
+    QStringList modelFiles = LXY::OpenFileChooser(tr("选择view matrix文件"), tr("../RealTimeRenderingDemo/DefaultModels"), tr("(*.viewMatrix)"), false);
+    for (auto filePath : modelFiles) {
+        this->glWidget->loadViewMatrix(filePath.toStdString());
+    }
+}
+
+void MainWindow::onSaveViewMatrix()
+{
+    this->glWidget->saveViewMatrix();
 }

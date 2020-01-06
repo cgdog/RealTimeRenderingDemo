@@ -21,6 +21,9 @@ private slots:
     void onClickLoadModel();
     void onClickLoadShaders();
 
+    void onLoadViewMatrix();
+    void onSaveViewMatrix();
+
     // for test.
     void onClickTestMatrix();
 

@@ -51,14 +51,17 @@ void BaseGLWidget::paintGL()
     //log() << "--deltaTime=" << deltaTime << endl;
     lastTime = curTime;
 
-    QOpenGLFunctions *f = this->context()->functions();
-    f->glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    f->glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    QOpenGLFunctions *glFuncs = this->context()->functions();
+    glFuncs->glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glFuncs->glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-    f->glEnable(GL_DEPTH_TEST);
-//    f->glEnable(GL_CULL_FACE);
-//    //f->glCullFace(GL_BACK);
-//    f->glCullFace(GL_FRONT);
+    glFuncs->glEnable(GL_DEPTH_TEST);
+    //glFuncs->glEnable(GL_CULL_FACE);
+    //glFuncs->glCullFace(GL_BACK);
+    //glFuncs->glCullFace(GL_FRONT);
+    // https://learnopengl.com/Advanced-OpenGL/Face-culling
+    // 注意face culling是相对于你的视点(相机的)。现在camera默认位置是(0, 0, -3), 看向(0, 0, 0)处。
+    // 所以，项目中的DefaultModels目录下的几个默认模型(.off文件)相对于此时的相机是顺时针缠绕(clock-wise winding)，即OpenGL中的back face。
 
     m_vao->bind();
     m_ebo->bind();
@@ -78,10 +81,10 @@ void BaseGLWidget::paintGL()
     int matrixUniformLoc = m_shader->getUniformLocation("matrix");
     // The matrices in OpenGL are column-major. Note: the LXY::Matrix4D implemented here is row-major matrix.
     // So I set the third parameter to GL_TRUE.
-    f->glUniformMatrix4fv(matrixUniformLoc, 1, GL_TRUE, tmpMatrix.getData());
+    glFuncs->glUniformMatrix4fv(matrixUniformLoc, 1, GL_TRUE, tmpMatrix.getData());
 
     GLsizei numFaceIndices = static_cast<GLsizei>(model.getIndices().size());
-    f->glDrawElements(GL_TRIANGLES, numFaceIndices, GL_UNSIGNED_INT, nullptr);
+    glFuncs->glDrawElements(GL_TRIANGLES, numFaceIndices, GL_UNSIGNED_INT, nullptr);
     m_shader->release();
     m_ebo->release();
     m_vao->release();

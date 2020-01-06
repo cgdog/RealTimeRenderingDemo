@@ -59,6 +59,7 @@ void MainWindow::onClickLoadModelAndShaders()
         else if (filePath.endsWith(".off") || filePath.endsWith(".obj"))
         {
             modelPath = filePath.toStdString();
+            setTitle(filePath);
         }
     }
 
@@ -69,8 +70,9 @@ void MainWindow::onClickLoadModel()
 {
     QStringList modelFiles = LXY::OpenFileChooser(tr("选择模型文件"), tr("../RealTimeRenderingDemo/DefaultModels"), tr("(*.off *.obj)"), false);
     for (auto filePath : modelFiles) {
+        setTitle(filePath);
         string modelPath = filePath.toStdString();
-         this->glWidget->changeModel(filePath.toStdString());
+        this->glWidget->changeModel(filePath.toStdString());
     }
 }
 
@@ -119,4 +121,10 @@ void MainWindow::onLoadViewMatrix()
 void MainWindow::onSaveViewMatrix()
 {
     this->glWidget->saveViewMatrix();
+}
+
+void MainWindow::setTitle(QString title)
+{
+    title = "RealtmeRenderintDemo: " + title.split("/").last();
+    setWindowTitle(title);
 }

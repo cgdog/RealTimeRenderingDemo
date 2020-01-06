@@ -15,6 +15,7 @@ public:
 
 private:
     void processMenu();
+    void setTitle(QString title);
 
 private slots:
     void onClickLoadModelAndShaders();

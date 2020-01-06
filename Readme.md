@@ -1,6 +1,7 @@
 ### Realtime Rendering Demos
 
 在阅读[Real-Time Rendering, Fourth Edition](https://book.douban.com/subject/30296179/)(简称RTR4)时，根据书中原理编写的Demo。
+> 本项目遵守MIT License
 
 > 我的RTR4的读书笔记写在知乎专栏:[RealtimeRendering](https://zhuanlan.zhihu.com/RealtimeRendering4th)
 

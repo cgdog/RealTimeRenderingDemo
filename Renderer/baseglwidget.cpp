@@ -67,13 +67,12 @@ void BaseGLWidget::paintGL()
     m_ebo->bind();
     m_shader->bind();
 
-
     Matrix4D viewMatrix = camera.lookAt();
     //Matrix4D projection = camera.getPerspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
     Matrix4D projection = camera.getPerspective(4.0f/3.0f, 0.1f, 100.0f);
     //Matrix4D rotationX = camera.getTransform().rotate(rotationFactor * xRot, 0, 1, 0);
     //Matrix4D rotationY = camera.getTransform().rotate(rotationFactor * yRot, 1, 0, 0);
-    Matrix4D translation = camera.getTransform().translate(0, 0, -2);
+    Matrix4D translation = model.getTransform().translate(0, 0, -2);
     //Matrix4D tmpMatrix = projection * translation * rotationY * rotationX;
     //Matrix4D tmpMatrix = projection * viewMatrix * translation * rotationY * rotationX;
     //Matrix4D tmpMatrix = projection * translation;

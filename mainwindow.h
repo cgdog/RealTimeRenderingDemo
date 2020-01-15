@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QMenuBar>
 #include "Renderer/trianglequadrenderer.h"
+#include "Renderer/simplelightingrenderer.h"
 
 class MainWindow : public QMainWindow
 {

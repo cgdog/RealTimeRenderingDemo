@@ -18,9 +18,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Math/camera.cpp \
+    Math/light.cpp \
     Math/matrix4d.cpp \
     Math/transform.cpp \
     Math/vector3.cpp \
+    Math/vector4.cpp \
     Models/model.cpp \
     Renderer/trianglequadrenderer.cpp \
     Renderer/baseglwidget.cpp \
@@ -29,13 +31,16 @@ SOURCES += \
     Utilities/modelParser.cpp \
     Utilities/timemanager.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    Renderer/simplelightingrenderer.cpp
 
 HEADERS += \
     Math/camera.h \
+    Math/light.h \
     Math/matrix4d.h \
     Math/transform.h \
     Math/vector3.h \
+    Math/vector4.h \
     Models/model.h \
     Renderer/trianglequadrenderer.h \
     Renderer/baseglwidget.h \
@@ -43,7 +48,8 @@ HEADERS += \
     Utilities/helperFuncs.h \
     Utilities/modelParser.h \
     Utilities/timemanager.h \
-    mainwindow.h
+    mainwindow.h \
+    Renderer/simplelightingrenderer.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -8,7 +8,8 @@ using namespace LXY;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), mb(nullptr)
 {
-    glWidget = new TriangleQuadRenderer;
+    //glWidget = new TriangleQuadRenderer;
+    glWidget = new SimpleLightingRenderer;
     setCentralWidget(glWidget);
     processMenu();
 }

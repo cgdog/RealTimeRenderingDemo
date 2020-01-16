@@ -43,6 +43,8 @@ public:
 
     float dot(const Vector4& v);
 
+    float* getData();
+
 
 protected:
     float data[4];

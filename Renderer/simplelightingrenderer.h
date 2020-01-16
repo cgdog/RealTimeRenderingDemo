@@ -9,6 +9,7 @@ class SimpleLightingRenderer : public BaseGLWidget
 {
 public:
     SimpleLightingRenderer(QWidget *parent=nullptr);
+    SimpleLightingRenderer(int _lightNum, Vector4 _clearColor=Vector4(0.0f, 0.0f, 0.0f, 1.0f), QWidget *parent=nullptr);
     ~SimpleLightingRenderer() override;
 protected:
     void initializeGL() override;

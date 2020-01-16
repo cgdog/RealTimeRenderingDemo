@@ -4,27 +4,36 @@
 using namespace LXY;
 
 BaseGLWidget::BaseGLWidget(QWidget *parent) : QOpenGLWidget(parent),
-    m_vbo(nullptr), m_vao(nullptr), m_ebo(nullptr), m_shader(nullptr),
-    clearColor(Qt::black), xRot(0), yRot(0), zRot(0)
+    vbo(nullptr), vao(nullptr), ebo(nullptr), m_shader(nullptr),
+    clearColor(0.0f, 0.0f, 0.0f, 1.0f), xRot(0), yRot(0), zRot(0), lightNum(1)
 {
     setFocusPolicy(Qt::StrongFocus);
+    lights = new Light[static_cast<size_t>(lightNum)];
+}
+
+BaseGLWidget::BaseGLWidget(int _lightNum, Vector4 _clearColor, QWidget *parent) : QOpenGLWidget(parent),
+    vbo(nullptr), vao(nullptr), ebo(nullptr), m_shader(nullptr),
+    clearColor(_clearColor), xRot(0), yRot(0), zRot(0), lightNum(_lightNum)
+{
+    setFocusPolicy(Qt::StrongFocus);
+    lights = new Light[static_cast<size_t>(lightNum)];
 }
 
 BaseGLWidget::~BaseGLWidget()
 {
-    if (nullptr != m_vao)
+    if (nullptr != vao)
     {
-        delete m_vao;
+        delete vao;
     }
 
-    if (nullptr != m_vbo)
+    if (nullptr != vbo)
     {
-        delete m_vbo;
+        delete vbo;
     }
 
-    if (nullptr != m_ebo)
+    if (nullptr != ebo)
     {
-        delete m_ebo;
+        delete ebo;
     }
 
     if (nullptr != m_shader)
@@ -32,6 +41,16 @@ BaseGLWidget::~BaseGLWidget()
         delete m_shader;
     }
 
+    if (nullptr != lights)
+    {
+        delete [] lights;
+    }
+
+}
+
+int BaseGLWidget::getLightNum()
+{
+    return lightNum;
 }
 
 void BaseGLWidget::initializeGL()
@@ -53,7 +72,7 @@ void BaseGLWidget::paintGL()
 
     QOpenGLFunctions *glFuncs = this->context()->functions();
     glFuncs->glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    glFuncs->glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glFuncs->glClearColor(clearColor.X(), clearColor.Y(), clearColor.Z(), clearColor.W());
 
     glFuncs->glEnable(GL_DEPTH_TEST);
     //glFuncs->glEnable(GL_CULL_FACE);
@@ -63,8 +82,8 @@ void BaseGLWidget::paintGL()
     // 注意face culling是相对于你的视点(相机的)。现在camera默认位置是(0, 0, -3), 看向(0, 0, 0)处。
     // 所以，项目中的DefaultModels目录下的几个默认模型(.off文件)相对于此时的相机是顺时针缠绕(clock-wise winding)，即OpenGL中的back face。
 
-    m_vao->bind();
-    m_ebo->bind();
+    vao->bind();
+    ebo->bind();
     m_shader->bind();
 
     Matrix4D viewMatrix = camera.lookAt();
@@ -85,8 +104,8 @@ void BaseGLWidget::paintGL()
     GLsizei numFaceIndices = static_cast<GLsizei>(model.getIndices().size());
     glFuncs->glDrawElements(GL_TRIANGLES, numFaceIndices, GL_UNSIGNED_INT, nullptr);
     m_shader->release();
-    m_ebo->release();
-    m_vao->release();
+    ebo->release();
+    vao->release();
 
     this->context()->swapBuffers(this->context()->surface());
 }
@@ -110,7 +129,7 @@ QSize BaseGLWidget::sizeHint() const
     return QSize(640, 480);
 }
 
-void BaseGLWidget::setClearColor(const QColor &color)
+void BaseGLWidget::setClearColor(const Vector4 &color)
 {
     clearColor = color;
     update();
@@ -182,52 +201,52 @@ void BaseGLWidget::changeModel(const string& modelPath, bool isUpdateGL)
     model.loadModel(modelPath);
     auto &vertices = model.getVertices();
     auto &indices = model.getIndices();
-    if (nullptr == m_vao)
+    if (nullptr == vao)
     {
-        m_vao = new QOpenGLVertexArrayObject();
+        vao = new QOpenGLVertexArrayObject();
     }
 
-    if (nullptr == m_vbo)
+    if (nullptr == vbo)
     {
-        m_vbo = new QOpenGLBuffer(QOpenGLBuffer::Type::VertexBuffer);
-    } else if (m_vbo->isCreated()) {
+        vbo = new QOpenGLBuffer(QOpenGLBuffer::Type::VertexBuffer);
+    } else if (vbo->isCreated()) {
         //m_vbo->destroy();
     }
 
-    if (nullptr == m_ebo)
+    if (nullptr == ebo)
     {
-        m_ebo = new QOpenGLBuffer(QOpenGLBuffer::Type::IndexBuffer);
-    } else if (m_ebo->isCreated()) {
+        ebo = new QOpenGLBuffer(QOpenGLBuffer::Type::IndexBuffer);
+    } else if (ebo->isCreated()) {
         //m_ebo->destroy();
     }
 
-    if (!m_vao->isCreated())
+    if (!vao->isCreated())
     {
-        m_vao->create();
+        vao->create();
     }
 
-    m_vao->bind();
-    if (!m_vbo->isCreated())
+    vao->bind();
+    if (!vbo->isCreated())
     {
-        m_vbo->create();
+        vbo->create();
     }
-    m_vbo->bind();
-    m_vbo->allocate(&vertices[0], static_cast<int>(vertices.size() * sizeof(GLfloat)));
+    vbo->bind();
+    vbo->allocate(&vertices[0], static_cast<int>(vertices.size() * sizeof(GLfloat)));
 
-    if (!m_ebo->isCreated())
+    if (!ebo->isCreated())
     {
-        m_ebo->create();
+        ebo->create();
     }
-    m_ebo->bind();
-    m_ebo->allocate(&indices[0], static_cast<int>(indices.size() * sizeof(GLint)));
+    ebo->bind();
+    ebo->allocate(&indices[0], static_cast<int>(indices.size() * sizeof(GLint)));
 
     QOpenGLFunctions *f = this->context()->functions();
 
     f->glEnableVertexAttribArray(0);
     f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), 0);
-    m_vbo->release();
-    m_ebo->release();
-    m_vao->release();
+    vbo->release();
+    ebo->release();
+    vao->release();
 
     loadViewMatrixByModelPath(modelPath);
     if (isUpdateGL)

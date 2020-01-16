@@ -9,13 +9,13 @@ struct Light {
 };
 
 uniform LightUBlock {
-    Light uLights[MAXLIGHTS];
+    Light uLights[1];
 };
 
 uniform uint uLightCount;
-uniform vec4 uWarmColor;
+uniform vec3 uWarmColor=vec3(0.3, 0.3, 0);
 uniform vec4 uEyePosition;
-uniform vec3 uFUnlit;
+uniform vec3 uFUnlit=vec3(0.0, 0.0, 0.0);
 
 vec3 lit(vec3 l, vec3 n, vec3 v) {
     vec3 r_l = reflect(-l, n);

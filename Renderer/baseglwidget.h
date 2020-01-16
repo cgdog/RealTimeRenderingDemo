@@ -12,7 +12,8 @@
 #include "Models/model.h"
 #include <string>
 #include "Shaders/shader.h"
-#include "Math/camera.h"
+#include "Models/camera.h"
+#include "Models/light.h"
 #include "Utilities/timemanager.h"
 
 using std::string;
@@ -22,16 +23,19 @@ class BaseGLWidget : public QOpenGLWidget
     Q_OBJECT
 public:
     BaseGLWidget(QWidget *parent=nullptr);
+    BaseGLWidget(int _lightNum, Vector4 _clearColor=Vector4(0.0f, 0.0f, 0.0f, 1.0f), QWidget *parent=nullptr);
     virtual ~BaseGLWidget() override;
     virtual QSize minimumSizeHint() const override;
     virtual QSize sizeHint() const override;
-    virtual void setClearColor(const QColor &color);
+    virtual void setClearColor(const Vector4 &color);
     virtual void changeModel(const string& modelPath, bool isUpdateGL = true);
     virtual void changeShaders(const QString& vsPath, const QString& fsPath, bool isUpdateGL = true);
     virtual void changeModelAndShaders(const string& modelPath, const QString& vsPath, const QString& fsPath, bool isUpdateGL = true);
     virtual void loadViewMatrix(const string& path);
     void loadViewMatrixByModelPath(const string& modelPath);
     virtual void saveViewMatrix();
+
+    int getLightNum();
 
 protected:
     virtual void initializeGL() override;
@@ -50,18 +54,20 @@ protected slots:
 
 
 protected:
-    QOpenGLBuffer *m_vbo;
-    QOpenGLBuffer *m_ebo;
-    QOpenGLVertexArrayObject *m_vao;
+    QOpenGLBuffer *vbo;
+    QOpenGLBuffer *ebo;
+    QOpenGLVertexArrayObject *vao;
     Shader * m_shader;
 
     Model model;
 
-    QTimer *m_timer;
-    QColor clearColor;
+    QTimer *timer;
+    Vector4 clearColor;
     QPoint lastPos;
 
     Camera camera;
+    int lightNum;
+    Light* lights;
 
     LXY::TimeManager timeManaer;
     int deltaTime;

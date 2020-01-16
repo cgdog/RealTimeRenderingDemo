@@ -101,3 +101,8 @@ void Shader::loadShaderByPath(const QString& vsPath, const QString& fsPath)
 
     loadShaders(vertexSource.c_str(), fragmentSource.c_str());
 }
+
+GLuint Shader::getProgramId()
+{
+    return shaderProgram->programId();
+}

@@ -26,11 +26,17 @@ private slots:
     void onLoadViewMatrix();
     void onSaveViewMatrix();
 
+    // demos
+    void onChange2LightDemo();
+    void onChange2DefaultDemo();
+
     // for test.
     void onClickTestMatrix();
 
 private:
     BaseGLWidget* glWidget;
     QMenuBar* mb;
+    QAction* defaultDemoAction;
+    QAction* lightDemoAction;
 };
 #endif // MAINWINDOW_H

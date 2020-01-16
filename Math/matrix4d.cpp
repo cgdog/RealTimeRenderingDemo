@@ -53,6 +53,19 @@ Matrix4D Matrix4D::operator*(const Matrix4D& mat4)
     return res;
 }
 
+Vector4 Matrix4D::operator*(const Vector4& v)
+{
+    Vector4 res;
+    for (int i = 0; i < 4; ++i)
+    {
+        for (int j = 0; j < 4; ++j)
+        {
+            res[i] += (*this)(i, j) * v[j];
+        }
+    }
+    return res;
+}
+
 Matrix4D Matrix4D::operator+(const Matrix4D& mat4)
 {
     Matrix4D res;

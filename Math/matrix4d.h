@@ -1,6 +1,7 @@
 #ifndef MATRIX4D_H
 #define MATRIX4D_H
 #include <iostream>
+#include "Math/vector4.h"
 using namespace std;
 
 namespace LXY {
@@ -27,6 +28,8 @@ public:
     Matrix4D operator*(const Matrix4D& mat4);
     Matrix4D operator+(const Matrix4D& mat4);
     Matrix4D operator-(const Matrix4D& mat4);
+
+    Vector4 operator*(const Vector4& v);
 
 
     friend ostream & operator<<(ostream & out, const Matrix4D & matrix);

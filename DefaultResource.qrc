@@ -13,6 +13,7 @@
     <file alias="horse-gallop-01.obj">DefaultModels/horse-gallop/horse-gallop-01.obj</file>
     <file alias="horse-gallop-01.vs">DefaultModels/horse-gallop/horse-gallop-01.vs</file>
     <file alias="horse-gallop-01.fs">DefaultModels/horse-gallop/horse-gallop-01.fs</file>
+    <file alias="simpleLight.obj">DefaultModels/lightDemos/simpleLight.obj</file>
     <file alias="simpleLight.fs">DefaultModels/lightDemos/simpleLight.fs</file>
     <file alias="simpleLight.vs">DefaultModels/lightDemos/simpleLight.vs</file>
 </qresource>

@@ -17,13 +17,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Math/camera.cpp \
-    Math/light.cpp \
     Math/matrix4d.cpp \
     Math/transform.cpp \
     Math/vector3.cpp \
     Math/vector4.cpp \
     Models/model.cpp \
+    Models/camera.cpp \
+    Models/light.cpp \
     Renderer/trianglequadrenderer.cpp \
     Renderer/baseglwidget.cpp \
     Shaders/shader.cpp \
@@ -35,13 +35,13 @@ SOURCES += \
     Renderer/simplelightingrenderer.cpp
 
 HEADERS += \
-    Math/camera.h \
-    Math/light.h \
     Math/matrix4d.h \
     Math/transform.h \
     Math/vector3.h \
     Math/vector4.h \
     Models/model.h \
+    Models/camera.h \
+    Models/light.h \
     Renderer/trianglequadrenderer.h \
     Renderer/baseglwidget.h \
     Shaders/shader.h \

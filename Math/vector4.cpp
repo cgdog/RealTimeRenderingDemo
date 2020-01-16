@@ -214,4 +214,9 @@ void Vector4::operator-=(const Vector4& v)
     }
 }
 
+float* Vector4::getData()
+{
+    return data;
+}
+
 }

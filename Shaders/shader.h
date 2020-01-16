@@ -24,6 +24,8 @@ public:
 
     void setMat4(const char * name, const QMatrix4x4& matrix);
 
+    GLuint getProgramId();
+
 private:
     QOpenGLShaderProgram * shaderProgram;
 };

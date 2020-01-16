@@ -35,6 +35,14 @@ void MainWindow::processMenu()
         fileMenu->addAction("Load View Matrix", this, SLOT(onLoadViewMatrix()));
         fileMenu->addAction("Save View Matrix", this, SLOT(onSaveViewMatrix()));
 
+        auto demoMenu = mb->addMenu(tr("&Demos"));
+        defaultDemoAction = demoMenu->addAction("DefaultDemo", this, SLOT(onChange2DefaultDemo()));
+        defaultDemoAction->setCheckable(true);
+        //defaultDemoAction->setChecked(true);
+        lightDemoAction = demoMenu->addAction("LightDemo", this, SLOT(onChange2LightDemo()));
+        lightDemoAction->setCheckable(true);
+        lightDemoAction->setChecked(true);
+
         // for test.
         auto testMenu = mb->addMenu(tr("&Test"));
         testMenu->addAction("Test Matrix", this, SLOT(onClickTestMatrix()));
@@ -128,4 +136,36 @@ void MainWindow::setTitle(QString title)
 {
     title = "RealtmeRenderintDemo: " + title.split("/").last();
     setWindowTitle(title);
+}
+
+void MainWindow::onChange2LightDemo()
+{
+    if (typeid (glWidget) != typeid(SimpleLightingRenderer))
+    {
+        if (nullptr != glWidget)
+        {
+            delete glWidget;
+        }
+        glWidget = new SimpleLightingRenderer;
+        setCentralWidget(glWidget);
+        lightDemoAction->setChecked(true);
+        defaultDemoAction->setChecked(false);
+        setTitle("light demo");
+    }
+}
+
+void MainWindow::onChange2DefaultDemo()
+{
+    if (typeid (glWidget) != typeid(TriangleQuadRenderer))
+    {
+        if (nullptr != glWidget)
+        {
+            delete glWidget;
+        }
+        glWidget = new TriangleQuadRenderer;
+        setCentralWidget(glWidget);
+        lightDemoAction->setChecked(false);
+        defaultDemoAction->setChecked(true);
+        setTitle("default demo");
+    }
 }

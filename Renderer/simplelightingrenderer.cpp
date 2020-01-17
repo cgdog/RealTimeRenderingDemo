@@ -31,10 +31,11 @@ void SimpleLightingRenderer::paintGL()
     //http://www.lighthouse3d.com/tutorials/glsl-tutorial/uniform-blocks/
     //https://doc.qt.io/qt-5/qopenglextrafunctions.html#glGetUniformBlockIndex
     //https://blog.csdn.net/wangdingqiaoit/article/details/52717963
+
     //BaseGLWidget::paintGL();
 
     QOpenGLFunctions *glFuncs = this->context()->functions();
-    QOpenGLExtraFunctions* glExtraFuncs = context()->extraFunctions();
+    //QOpenGLExtraFunctions* glExtraFuncs = context()->extraFunctions();
 
     glFuncs->glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glFuncs->glClearColor(clearColor.X(), clearColor.Y(), clearColor.Z(), clearColor.W());
@@ -55,24 +56,28 @@ void SimpleLightingRenderer::paintGL()
     int uniformViewProj = m_shader->getUniformLocation("viewProj");
     glFuncs->glUniformMatrix4fv(uniformViewProj, 1, GL_TRUE, projView.getData());
 
-    GLuint lightUBlockIndex = glExtraFuncs->glGetUniformBlockIndex(m_shader->getProgramId(), "LightUBlock");
+    //GLuint lightUBlockIndex = glExtraFuncs->glGetUniformBlockIndex(m_shader->getProgramId(), "LightUBlock");
 
     for (int i = 0; i < lightNum; ++i)
     {
-        auto indexStr = ("uLights["+to_string(i+1)+"].position").c_str();
-        int uniformLightLoc = m_shader->getUniformLocation("uLights[0].position");
+        int uniformLightLoc = m_shader->getUniformLocation(("uLights["+to_string(i)+"].position").c_str());
         glFuncs->glUniform4fv(uniformLightLoc, 1, lights[i].getPosition().getData());
-        indexStr = ("uLights["+to_string(i)+"].color").c_str();
-        uniformLightLoc = m_shader->getUniformLocation("uLights[0].color");
+        uniformLightLoc = m_shader->getUniformLocation(("uLights["+to_string(i)+"].color").c_str());
         glFuncs->glUniform4fv(uniformLightLoc, 1, lights[i].getColor().getData());
     }
 
     int uniformLightCount = m_shader->getUniformLocation("uLightCount");
     glFuncs->glUniform1i(uniformLightCount, lightNum);
 
+    int uniformWarmColor = m_shader->getUniformLocation("uWarmColor");
+    glFuncs->glUniform3f(uniformWarmColor, 0.3f, 0.3f, 0.0f);
+
     int uniformEyePosLoc = m_shader->getUniformLocation("uEyePosition");
     auto cameraPos = camera.getPos();
     glFuncs->glUniform4f(uniformEyePosLoc, cameraPos.X(), cameraPos.Y(), cameraPos.Z(), 1.0f);
+
+    int uniformFUnlit = m_shader->getUniformLocation("uFUnlit");
+    glFuncs->glUniform3f(uniformFUnlit, 0.2f, 0.2f, 0.2f);
 
     GLsizei numFaceIndices = static_cast<GLsizei>(model.getIndices().size());
     glFuncs->glDrawElements(GL_TRIANGLES, numFaceIndices, GL_UNSIGNED_INT, nullptr);

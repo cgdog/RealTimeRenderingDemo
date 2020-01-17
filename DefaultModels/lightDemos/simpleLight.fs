@@ -8,9 +8,9 @@ struct Light {
     vec4 color;
 };
 
-uniform LightUBlock {
-    Light uLights[1];
-};
+//uniform LightUBlock {
+uniform Light uLights[1];
+//} myLights;
 
 uniform uint uLightCount;
 uniform vec3 uWarmColor=vec3(0.3, 0.3, 0);

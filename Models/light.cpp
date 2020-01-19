@@ -3,7 +3,7 @@
 namespace LXY {
 
 
-Light::Light() : position(-1.25247, 1.86265e-09f, -2.10285f, 1.0f), color(1.0f, 0.3f, 0.2f, 1.0f)
+Light::Light() : position(-1.25247f, 1.86265e-09f, -2.10285f, 1.0f), color(1.0f, 0.3f, 0.2f, 1.0f)
 {
 }
 

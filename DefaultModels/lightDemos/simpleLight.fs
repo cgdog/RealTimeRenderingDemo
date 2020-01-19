@@ -8,9 +8,7 @@ struct Light {
     vec4 color;
 };
 
-//uniform LightUBlock {
 uniform Light uLights[1];
-//} myLights;
 
 uniform uint uLightCount;
 uniform vec3 uWarmColor=vec3(0.3, 0.3, 0);
@@ -25,8 +23,6 @@ vec3 lit(vec3 l, vec3 n, vec3 v) {
 }
 
 void main() {
-    //vec3 color = (vPos + 1.0f) * 0.5f;
-    //outColor = vec4(color, 1.0f);
     vec3 n = normalize(vNormal);
     vec3 v = normalize(uEyePosition.xyz - vPos);
     outColor = vec4(uFUnlit, 1.0);
@@ -35,11 +31,5 @@ void main() {
         vec3 l = normalize(uLights[i].position.xyz - vPos);
         float NdL = clamp(dot(n, l), 0.0, 1.0);
         outColor.rgb += NdL * uLights[i].color.rgb * lit(l, n, v);
-        //NdL += 0.5;
-        //outColor = vec4(NdL, NdL, NdL, 1.0);
     }
-
-    //outColor = vec4(uLightCount, uLightCount, uLightCount, 1.0);
-    //outColor = vec4(n, 1.0);
-    //outColor = uEyePosition;
 }

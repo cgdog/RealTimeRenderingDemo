@@ -9,5 +9,6 @@ namespace LXY {
     void loadDefaultModel(const string&  modelPath, vector<float>& vertices, vector<int>& indices, vector<float>& vNormals);
     void loadDefaultOFFModel(const string&  modelPath, vector<float>& vertices, vector<int>& indices, vector<float>& vNormals);
     void loadDefaultOBJModel(const string&  modelPath, vector<float>& vertices, vector<int>& indices, vector<float>& vNormals);
+    void convertObj2Off(const string& objPath);
 }
 #endif // MODELPARSER_H

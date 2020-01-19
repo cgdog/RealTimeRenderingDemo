@@ -30,6 +30,10 @@ private slots:
     void onChange2LightDemo();
     void onChange2DefaultDemo();
 
+    // tools
+
+    void onClickObj2Off();
+
     // for test.
     void onClickTestMatrix();
 

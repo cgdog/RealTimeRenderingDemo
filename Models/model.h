@@ -23,7 +23,10 @@ public:
 
     vector<float>& getVertices();
     vector<float>& getVertexNormals();
+    vector<float> getVertexAttributes();
     vector<int>& getIndices();
+
+    bool hasNormals();
 
     Transform& getTransform();
 

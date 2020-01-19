@@ -28,14 +28,8 @@ void SimpleLightingRenderer::resizeGL( int width, int height )
 
 void SimpleLightingRenderer::paintGL()
 {
-    //http://www.lighthouse3d.com/tutorials/glsl-tutorial/uniform-blocks/
-    //https://doc.qt.io/qt-5/qopenglextrafunctions.html#glGetUniformBlockIndex
-    //https://blog.csdn.net/wangdingqiaoit/article/details/52717963
-
-    //BaseGLWidget::paintGL();
-
     QOpenGLFunctions *glFuncs = this->context()->functions();
-    //QOpenGLExtraFunctions* glExtraFuncs = context()->extraFunctions();
+    QOpenGLExtraFunctions* glExtraFuncs = context()->extraFunctions();
 
     glFuncs->glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glFuncs->glClearColor(clearColor.X(), clearColor.Y(), clearColor.Z(), clearColor.W());
@@ -56,8 +50,6 @@ void SimpleLightingRenderer::paintGL()
     int uniformViewProj = m_shader->getUniformLocation("viewProj");
     glFuncs->glUniformMatrix4fv(uniformViewProj, 1, GL_TRUE, projView.getData());
 
-    //GLuint lightUBlockIndex = glExtraFuncs->glGetUniformBlockIndex(m_shader->getProgramId(), "LightUBlock");
-
     for (int i = 0; i < lightNum; ++i)
     {
         int uniformLightLoc = m_shader->getUniformLocation(("uLights["+to_string(i)+"].position").c_str());
@@ -67,7 +59,7 @@ void SimpleLightingRenderer::paintGL()
     }
 
     int uniformLightCount = m_shader->getUniformLocation("uLightCount");
-    glFuncs->glUniform1i(uniformLightCount, lightNum);
+    glExtraFuncs->glUniform1ui(uniformLightCount, static_cast<uint>(lightNum));
 
     int uniformWarmColor = m_shader->getUniformLocation("uWarmColor");
     glFuncs->glUniform3f(uniformWarmColor, 0.3f, 0.3f, 0.0f);

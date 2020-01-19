@@ -10,6 +10,8 @@ uniform mat4 viewProj;
 void main() {
     vec4 worldPosition = uModel * vec4(position, 1.0) ;
     vPos = worldPosition. xyz;
-    vNormal = (uModel * vec4(normal, 0.0)).xyz;
+    //vNormal = (transpose(inverse(uModel)) * vec4(normal, 0.0)).xyz;
+    // 由于在世界空间中进行的光照计算，且模型只发生了平移，而平移对法线无影响,所以无需对法线坐标处理。
+    vNormal = normal;
     gl_Position = viewProj * worldPosition ;
 }

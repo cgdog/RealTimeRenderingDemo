@@ -58,7 +58,7 @@ void BaseGLWidget::initializeGL()
     changeModelAndShaders(":/default.off", QString(":/default.vs"), QString(":/default.fs"), false);
     //changeModelAndShaders(":/quad.off", QString(":/quad.vs"), QString(":/quad.fs"), false);
     //changeModelAndShaders(":/triangle.off", QString(":/triangle.vs"), QString(":/triangle.fs"), false);
-    //changeModelAndShaders(":/horse-gallop-01.obj", QString(":/horse-gallop-01.vs"), QString(":/horse-gallop-01.fs"), false);
+    //changeModelAndShaders(":/horse-gallop-01.off", QString(":/horse-gallop-01.vs"), QString(":/horse-gallop-01.fs"), false);
     timeManaer.initialize();
     lastTime = 0;
 }
@@ -200,7 +200,9 @@ void BaseGLWidget::changeModel(const string& modelPath, bool isUpdateGL)
     }
     model.loadModel(modelPath);
     auto &vertices = model.getVertices();
+    auto vertexAttributes = model.getVertexAttributes();
     auto &indices = model.getIndices();
+    auto hasNormal = model.hasNormals();
     if (nullptr == vao)
     {
         vao = new QOpenGLVertexArrayObject();
@@ -231,7 +233,15 @@ void BaseGLWidget::changeModel(const string& modelPath, bool isUpdateGL)
         vbo->create();
     }
     vbo->bind();
-    vbo->allocate(&vertices[0], static_cast<int>(vertices.size() * sizeof(GLfloat)));
+
+    if (hasNormal)
+    {
+        vbo->allocate(&vertexAttributes[0], static_cast<int>(vertexAttributes.size() * sizeof(GLfloat)));
+    }
+    else
+    {
+        vbo->allocate(&vertices[0], static_cast<int>(vertices.size() * sizeof(GLfloat)));
+    }
 
     if (!ebo->isCreated())
     {
@@ -240,10 +250,24 @@ void BaseGLWidget::changeModel(const string& modelPath, bool isUpdateGL)
     ebo->bind();
     ebo->allocate(&indices[0], static_cast<int>(indices.size() * sizeof(GLint)));
 
-    QOpenGLFunctions *f = this->context()->functions();
+    QOpenGLFunctions *glFuncs = this->context()->functions();
 
-    f->glEnableVertexAttribArray(0);
-    f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), 0);
+    glFuncs->glEnableVertexAttribArray(0);
+
+    if (hasNormal)
+    {
+        glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat), 0);
+        //glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat), (void*)(3 * sizeof(float))); //for debug: 此时用法线坐标作为顶点坐标，调试用
+
+        glFuncs->glEnableVertexAttribArray(1);
+        glFuncs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat), (void*)(3 * sizeof(float)));
+    }
+    else
+    {
+        glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), 0);
+    }
+    // https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Buffer_Object
+
     vbo->release();
     ebo->release();
     vao->release();
@@ -289,10 +313,69 @@ void BaseGLWidget::loadViewMatrixByModelPath(const string& modelPath)
     viewMatrixPath += ".viewMatrix";
     if (isStartsWith(viewMatrixPath, ":/"))
     {
-        //viewMatrixPath[0] = '.';
+        loadDefaultViewMatrix(viewMatrixPath);
+    }
+    else
+    {
+        loadViewMatrix(viewMatrixPath);
+    }
+}
+
+void BaseGLWidget::loadDefaultViewMatrix(const string& path)
+{
+    QFile file(QString(path.c_str()));
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        log() << "could not load default view matrix: " << path << endl;
+        update();
         return;
     }
-    loadViewMatrix(viewMatrixPath);
+
+    int flag = 0;
+    while (!file.atEnd())
+    {
+        QByteArray bytes = file.readLine();
+        const char * line= bytes.constData();
+
+        if ('#' == line[0])
+        {
+            continue;
+        }
+
+        stringstream ss(line);
+        Vector3 v3;
+        float eulerAngle(0.0f);
+        if (flag >= 0 && flag < 3)
+        {
+            ss >> v3.X() >> v3.Y() >> v3.Z();
+        }
+        else
+        {
+            ss >> eulerAngle;
+        }
+        switch (flag)
+        {
+        case 0:
+            camera.setPos(v3);
+            break;
+        case 1:
+            camera.setWorldUp(v3);
+            break;
+        case 2:
+            camera.setCameraDirection(v3);
+            break;
+        case 3:
+            camera.setYaw(eulerAngle);
+            break;
+        case 4:
+            camera.setPitch(eulerAngle);
+            break;
+        }
+
+        ++flag;
+    }
+    file.close();
+    update();
 }
 
 void BaseGLWidget::loadViewMatrix(const string& path)

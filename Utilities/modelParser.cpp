@@ -302,4 +302,32 @@ namespace LXY {
         file.close();
         return;
     }
+
+    void convertObj2Off(const string& objPath)
+    {
+        string offPath = objPath;
+        *(offPath.end()-1) = 'f';
+        *(offPath.end()-2) = 'f';
+
+        vector<float> vertices;
+        vector<int> indices;
+        vector<float> vNormals;
+        loadOBJModel(objPath, vertices, indices, vNormals);
+
+        ofstream fout(offPath);
+        fout << "OFF\n";
+        fout << "   \n";
+        fout << vertices.size() / 3 << " " << indices.size() / 3 << " " << "0\n";
+        for (size_t i = 0; i < vertices.size(); i+=3)
+        {
+            fout << vertices[i] << " " << vertices[i+1] << " " << vertices[i+2] << endl;
+        }
+
+        for (size_t i = 0; i < indices.size(); i+=3)
+        {
+            fout << "3 " << indices[i] << " " << indices[i+1] << " " << indices[i+2] << endl;
+        }
+
+        fout.close();
+    }
 }

@@ -50,6 +50,32 @@ vector<float>& Model::getVertices()
 {
     return vertices;
 }
+
+bool Model::hasNormals()
+{
+    return !vNormals.empty();
+}
+
+vector<float> Model::getVertexAttributes()
+{
+    if (vNormals.empty()) return vertices;
+
+    vector<float> vertexAttributes(vertices.size()+vNormals.size());
+    size_t count = 0;
+    for (size_t i = 0; i < vertexAttributes.size(); i += 6)
+    {
+        vertexAttributes[i] = vertices[count];
+        vertexAttributes[i+1] = vertices[count + 1];
+        vertexAttributes[i+2] = vertices[count + 2];
+
+        vertexAttributes[i+3] = vNormals[count];
+        vertexAttributes[i+4] = vNormals[count+1];
+        vertexAttributes[i+5] = vNormals[count+2];
+        count += 3;
+    }
+    return vertexAttributes;
+}
+
 vector<int>& Model::getIndices()
 {
     return indices;

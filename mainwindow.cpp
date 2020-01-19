@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "Utilities/helperFuncs.h"
+#include "Utilities/modelParser.h"
 #include "Math/matrix4d.h"
 #include <sstream>
 
@@ -43,6 +44,9 @@ void MainWindow::processMenu()
         lightDemoAction->setCheckable(true);
         lightDemoAction->setChecked(true);
 
+        // tools
+        auto toolsMenu = mb->addMenu(tr("&Tools"));
+        toolsMenu->addAction("ObjToOff", this, SLOT(onClickObj2Off()));
         // for test.
         auto testMenu = mb->addMenu(tr("&Test"));
         testMenu->addAction("Test Matrix", this, SLOT(onClickTestMatrix()));
@@ -167,5 +171,13 @@ void MainWindow::onChange2DefaultDemo()
         lightDemoAction->setChecked(false);
         defaultDemoAction->setChecked(true);
         setTitle("default demo");
+    }
+}
+
+void MainWindow::onClickObj2Off()
+{
+    QStringList modelFiles = LXY::OpenFileChooser(tr("选择.obj模型文件"), tr("../RealTimeRenderingDemo/DefaultModels"), tr("(*.obj)"), false);
+    for (auto filePath : modelFiles) {
+        convertObj2Off(filePath.toStdString());
     }
 }

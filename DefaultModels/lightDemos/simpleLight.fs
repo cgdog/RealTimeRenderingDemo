@@ -35,5 +35,11 @@ void main() {
         vec3 l = normalize(uLights[i].position.xyz - vPos);
         float NdL = clamp(dot(n, l), 0.0, 1.0);
         outColor.rgb += NdL * uLights[i].color.rgb * lit(l, n, v);
+        //NdL += 0.5;
+        //outColor = vec4(NdL, NdL, NdL, 1.0);
     }
+
+    //outColor = vec4(uLightCount, uLightCount, uLightCount, 1.0);
+    //outColor = vec4(n, 1.0);
+    //outColor = uEyePosition;
 }

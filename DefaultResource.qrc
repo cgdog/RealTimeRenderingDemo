@@ -4,18 +4,27 @@
     <file alias="default.off">DefaultModels/default.off</file>
     <file alias="default.vs">DefaultModels/default.vs</file>
     <file alias="default.fs">DefaultModels/default.fs</file>
+    <file alias="default.viewMatrix">DefaultModels/default.viewMatrix</file>
+
     <file alias="quad.off">DefaultModels/quad/quad.off</file>
     <file alias="quad.vs">DefaultModels/quad/quad.vs</file>
     <file alias="quad.fs">DefaultModels/quad/quad.fs</file>
+    <file alias="quad.viewMatrix">DefaultModels/quad/quad.viewMatrix</file>
+
     <file alias="triangle.off">DefaultModels/triangles/triangle.off</file>
     <file alias="triangle.vs">DefaultModels/triangles/triangle.vs</file>
     <file alias="triangle.fs">DefaultModels/triangles/triangle.fs</file>
-    <file alias="horse-gallop-01.obj">DefaultModels/horse-gallop/horse-gallop-01.obj</file>
+    <file alias="triangle.viewMatrix">DefaultModels/triangles/triangle.viewMatrix</file>
+
+    <file alias="horse-gallop-01.off">DefaultModels/horse-gallop/horse-gallop-01.off</file>
     <file alias="horse-gallop-01.vs">DefaultModels/horse-gallop/horse-gallop-01.vs</file>
     <file alias="horse-gallop-01.fs">DefaultModels/horse-gallop/horse-gallop-01.fs</file>
+    <file alias="horse-gallop-01.viewMatrix">DefaultModels/horse-gallop/horse-gallop-01.viewMatrix</file>
+
     <file alias="simpleLight.obj">DefaultModels/lightDemos/simpleLight.obj</file>
     <file alias="simpleLight.fs">DefaultModels/lightDemos/simpleLight.fs</file>
     <file alias="simpleLight.vs">DefaultModels/lightDemos/simpleLight.vs</file>
+    <file alias="simpleLight.viewMatrix">DefaultModels/lightDemos/simpleLight.viewMatrix</file>
 </qresource>
 </RCC>
 

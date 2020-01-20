@@ -7,8 +7,6 @@
 *.core
 *.moc
 *.o
-*.obj
-!./DefaultModels/*.obj
 *.orig
 *.rej
 *.so

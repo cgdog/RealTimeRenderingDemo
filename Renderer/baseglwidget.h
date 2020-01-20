@@ -76,10 +76,10 @@ protected:
     int deltaTime;
     int lastTime;
 
-    float rotationFactor = 0.02f;
-    int xRot;
-    int yRot;
-    int zRot;
+//    float rotationFactor = 0.02f;
+//    int xRot;
+//    int yRot;
+//    int zRot;
 };
 
 #endif // BASEGLWIDGET_H

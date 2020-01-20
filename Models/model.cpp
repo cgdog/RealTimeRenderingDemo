@@ -110,7 +110,7 @@ void Model::processMouseMove(float x, float y)
         float yOffset = y - lastY;
         xOffset *= mouseSensitivity;
         yOffset *= mouseSensitivity;
-        transform.rotateZ(yOffset);
+        transform.rotateZ(-yOffset);
         transform.rotateY(xOffset);
         lastX = x;
         lastY = y;

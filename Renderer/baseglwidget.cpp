@@ -5,7 +5,7 @@ using namespace LXY;
 
 BaseGLWidget::BaseGLWidget(QWidget *parent) : QOpenGLWidget(parent),
     vbo(nullptr), vao(nullptr), ebo(nullptr), m_shader(nullptr),
-    clearColor(0.0f, 0.0f, 0.0f, 1.0f), xRot(0), yRot(0), zRot(0), lightNum(1)
+    clearColor(0.0f, 0.0f, 0.0f, 1.0f), lightNum(1)
 {
     setFocusPolicy(Qt::StrongFocus);
     lights = new Light[static_cast<size_t>(lightNum)];
@@ -13,7 +13,7 @@ BaseGLWidget::BaseGLWidget(QWidget *parent) : QOpenGLWidget(parent),
 
 BaseGLWidget::BaseGLWidget(int _lightNum, Vector4 _clearColor, QWidget *parent) : QOpenGLWidget(parent),
     vbo(nullptr), vao(nullptr), ebo(nullptr), m_shader(nullptr),
-    clearColor(_clearColor), xRot(0), yRot(0), zRot(0), lightNum(_lightNum)
+    clearColor(_clearColor), lightNum(_lightNum)
 {
     setFocusPolicy(Qt::StrongFocus);
     lights = new Light[static_cast<size_t>(lightNum)];

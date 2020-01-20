@@ -7,6 +7,8 @@
 #include <string>
 using std::string;
 
+class BaseGLWidget;
+
 class Shader {
 
 public:
@@ -18,7 +20,7 @@ public:
     void release();
 
     void loadShaders(const char * vertex, const char * fragment);
-    void loadShaderByPath(const QString& vsPath, const QString& fsPath);
+    void loadShaderByPath(const QString& vsPath, const QString& fsPath, BaseGLWidget* glWidget = nullptr);
 
     int getUniformLocation(const char* name);
 

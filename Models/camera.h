@@ -37,6 +37,8 @@ public:
     void processMouseMove(float x, float y, bool isConstrainPitch = true);
     void processMouseScroll(float yOffset);
 
+    void processALTKey(bool altFlag);
+
     void setPos(const Vector3& pos);
     void setWorldUp(const Vector3& worldup);
     void setCameraDirection(const Vector3& _cameraDirection);
@@ -84,6 +86,7 @@ private:
     float zoom;
 
     bool isLeftMouseButtonDown;
+    bool isAltKeyDown;
 
     float cameraSpeed;
 };

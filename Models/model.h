@@ -32,6 +32,10 @@ public:
 
     string getModelPath();
 
+    void processMouseMove(float x, float y);
+    void processALTKey(bool altFlag);
+    void updateMouseLeftButtonDown(bool isDown, float x, float y);
+
 protected:
     void cleanModel();
 
@@ -45,6 +49,12 @@ protected:
 
 private:
     string modelPath;
+
+    bool isAltKeyDown;
+    bool isLeftMouseButtonDown;
+    float lastX;
+    float lastY;
+    float mouseSensitivity;
 };
 
 }

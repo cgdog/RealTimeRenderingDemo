@@ -1,5 +1,6 @@
 #include "shader.h"
 #include "Utilities/helperFuncs.h"
+#include "Renderer/baseglwidget.h"
 using namespace LXY;
 
 Shader::Shader(const char * vertex, const char * fragment) {
@@ -75,7 +76,7 @@ void Shader::loadShaders(const char * vertex, const char * fragment)
     }
 }
 
-void Shader::loadShaderByPath(const QString& vsPath, const QString& fsPath)
+void Shader::loadShaderByPath(const QString& vsPath, const QString& fsPath, BaseGLWidget* glWidget)
 {
     if (vsPath.length() == 0 || fsPath.length() == 0)
     {
@@ -99,6 +100,10 @@ void Shader::loadShaderByPath(const QString& vsPath, const QString& fsPath)
         fragmentSource = readFileToString(fsPath);
     }
 
+    if (nullptr != glWidget)
+    {
+        glWidget->preProcessShader(vertexSource, fragmentSource);
+    }
     loadShaders(vertexSource.c_str(), fragmentSource.c_str());
 }
 

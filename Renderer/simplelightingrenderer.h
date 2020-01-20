@@ -15,6 +15,8 @@ protected:
     void initializeGL() override;
     void resizeGL( int width, int height ) override;
     void paintGL() override;
+    virtual void preProcessShader(string& vs, string& fs) override;
+    virtual void changeLight() override;
 };
 
 #endif // SIMPLELIGHTINGRENDERER_H

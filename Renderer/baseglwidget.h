@@ -31,6 +31,8 @@ public:
     virtual void changeModel(const string& modelPath, bool isUpdateGL = true);
     virtual void changeShaders(const QString& vsPath, const QString& fsPath, bool isUpdateGL = true);
     virtual void changeModelAndShaders(const string& modelPath, const QString& vsPath, const QString& fsPath, bool isUpdateGL = true);
+    virtual void changeLight();
+    virtual void preProcessShader(string& vs, string& fs);
     virtual void loadViewMatrix(const string& path);
     virtual void loadDefaultViewMatrix(const string& path);
     void loadViewMatrixByModelPath(const string& modelPath);
@@ -49,7 +51,7 @@ protected:
     virtual void mouseDoubleClickEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent* event) override;
     void keyPressEvent(QKeyEvent *event) override;
-
+    void keyReleaseEvent(QKeyEvent *event) override;
 
 protected slots:
 

@@ -8,7 +8,8 @@ struct Light {
     vec4 color;
 };
 
-uniform Light uLights[1];
+// C++程序会预处理并替换MAXLIGHTNUM为一个数值
+uniform Light uLights[MAXLIGHTNUM];
 
 uniform uint uLightCount;
 uniform vec3 uWarmColor=vec3(0.3, 0.3, 0);

@@ -138,17 +138,20 @@ void BaseGLWidget::setClearColor(const Vector4 &color)
 void BaseGLWidget::mousePressEvent(QMouseEvent* event)
 {
    camera.updateMouseLeftButtonDown(true, event->x(), event->y());
+   model.updateMouseLeftButtonDown(true, event->x(), event->y());
 }
 
 void BaseGLWidget::mouseMoveEvent(QMouseEvent *event)
 {
     camera.processMouseMove(event->x(), event->y());
+    model.processMouseMove(event->x(), event->y());
     update();
 }
 
 void BaseGLWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     camera.updateMouseLeftButtonDown(false, event->x(), event->y());
+    model.updateMouseLeftButtonDown(false, event->x(), event->y());
 }
 
 void BaseGLWidget::wheelEvent(QWheelEvent* event)
@@ -185,11 +188,25 @@ void BaseGLWidget::keyPressEvent(QKeyEvent *event)
     {
         camera.processKeyboard(Direction::RIGHT, deltaTime);
     }
+    else if (event->key() == Qt::Key_Alt)
+    {
+        camera.processALTKey(true);
+        model.processALTKey(true);
+    }
     else
     {
         QWidget::keyPressEvent(event);
     }
     update();
+}
+
+void BaseGLWidget::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Alt)
+    {
+        camera.processALTKey(false);
+        model.processALTKey(false);
+    }
 }
 
 void BaseGLWidget::changeModel(const string& modelPath, bool isUpdateGL)
@@ -285,11 +302,18 @@ void BaseGLWidget::changeShaders(const QString& vsPath, const QString& fsPath, b
     {
         m_shader = new Shader();
     }
-    m_shader->loadShaderByPath(vsPath, fsPath);
+    m_shader->loadShaderByPath(vsPath, fsPath, this);
     if (isUpdateGL)
     {
         update();
     }
+}
+
+void BaseGLWidget::preProcessShader(string& vs, string& fs)
+{
+    Q_UNUSED(vs)
+    Q_UNUSED(fs)
+    //log() << "BaseGLWidget::preProcessShader() vs=\n" << vs << "fs=\n" << fs << endl;
 }
 
 void BaseGLWidget::changeModelAndShaders(const string& modelPath, const QString& vsPath, const QString& fsPath, bool isUpdateGL)
@@ -300,6 +324,11 @@ void BaseGLWidget::changeModelAndShaders(const string& modelPath, const QString&
     {
         update();
     }
+}
+
+void BaseGLWidget::changeLight()
+{
+    log() << "BaseGLWidget::changeLight()" << endl;
 }
 
 void BaseGLWidget::loadViewMatrixByModelPath(const string& modelPath)

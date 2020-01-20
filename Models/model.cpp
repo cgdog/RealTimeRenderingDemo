@@ -4,12 +4,12 @@
 namespace LXY
 {
 
-Model::Model()
+Model::Model() : isAltKeyDown(false), isLeftMouseButtonDown(false), mouseSensitivity(0.3f)
 {
 }
 
 
-Model::Model(const string& _modelPath)
+Model::Model(const string& _modelPath) : isAltKeyDown(false), isLeftMouseButtonDown(false), mouseSensitivity(0.1f)
 {
     log() << _modelPath << endl;
     loadModel(_modelPath);
@@ -95,6 +95,36 @@ Transform& Model::getTransform()
 string Model::getModelPath()
 {
     return this->modelPath;
+}
+
+void Model::processALTKey(bool altFlag)
+{
+    isAltKeyDown = altFlag;
+}
+
+void Model::processMouseMove(float x, float y)
+{
+    if (isLeftMouseButtonDown && isAltKeyDown)
+    {
+        float xOffset = x - lastX;
+        float yOffset = y - lastY;
+        xOffset *= mouseSensitivity;
+        yOffset *= mouseSensitivity;
+        transform.rotateZ(yOffset);
+        transform.rotateY(xOffset);
+        lastX = x;
+        lastY = y;
+    }
+}
+
+void Model::updateMouseLeftButtonDown(bool isDown, float x, float y)
+{
+    isLeftMouseButtonDown = isDown;
+    if (isDown)
+    {
+        lastX = x;
+        lastY = y;
+    }
 }
 
 }

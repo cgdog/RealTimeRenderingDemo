@@ -11,6 +11,7 @@
 #include <iostream>
 #include <algorithm>
 #include <iterator>
+#include <regex>
 
 using namespace std;
 
@@ -42,6 +43,9 @@ namespace LXY{
 
     float degreeToRadian(float degree);
     float radianToDegree(float radian);
+
+    void replace(string& source, const string& pattern, const string& newStr);
+    void replace(string& source, const string& pattern, int val);
 
 }
 #endif // HELPFUNC_H

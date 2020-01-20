@@ -129,4 +129,16 @@ namespace LXY{
         return fabsf(f) <= std::numeric_limits<float>::epsilon();
     }
 
+    void replace(string& source, const string& pattern, const string& newStr)
+    {
+        std::regex re(pattern);
+        source = std::regex_replace(source, re, newStr);
+    }
+
+    void replace(string& source, const string& pattern, int val)
+    {
+        std::regex re(pattern);
+        source = std::regex_replace(source, re, to_string(val));
+    }
+
 }

@@ -6,7 +6,7 @@ namespace LXY {
 Camera::Camera() : cameraPos(Vector3(0, 0, -3)), cameraTarget(Vector3(0.0f, 0.0f, 0.0f)),
     cameraWorldUP(Vector3(0.0, 1.0f, 0.0f)), cameraDirection(Vector3(0.0f, 0.0f, -1.0f)),
     yaw(YAW), pitch(PITCH), isLeftMouseButtonDown(false), mouseSensitivity(SENSITIVITY),
-    zoom(ZOOM), zoomSensitivity(ZOOMSENSITIVITY), cameraSpeed(0.1f)
+    zoom(ZOOM), zoomSensitivity(ZOOMSENSITIVITY), cameraSpeed(0.1f), isAltKeyDown(false)
 {
 
 }
@@ -160,6 +160,11 @@ void Camera::processKeyboard(Direction dir, int deltaTime)
     }
 }
 
+void Camera::processALTKey(bool altFlag)
+{
+    isAltKeyDown = altFlag;
+}
+
 void Camera::updateMouseLeftButtonDown(bool isDown, float x, float y)
 {
     isLeftMouseButtonDown = isDown;
@@ -172,7 +177,7 @@ void Camera::updateMouseLeftButtonDown(bool isDown, float x, float y)
 
 void Camera::processMouseMove(float x, float y, bool isConstrainPitch)
 {
-    if (isLeftMouseButtonDown)
+    if (isLeftMouseButtonDown && !isAltKeyDown)
     {
         float xOffset = x - lastX;
         float yOffset = y - lastY;

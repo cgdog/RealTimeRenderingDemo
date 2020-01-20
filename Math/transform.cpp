@@ -3,7 +3,7 @@
 
 namespace LXY {
 
-Transform::Transform()
+Transform::Transform() : xRot(0.0f), yRot(0.0f), zRot(0.0f)
 {
 
 }
@@ -54,6 +54,78 @@ Matrix4D Transform::scale(float x, float y, float z)
     scaling[5] *= y;
     scaling[10] *= z;
     return scaling;
+}
+
+void Transform::rotateX(float deltaAngle)
+{
+    xRot += deltaAngle;
+}
+
+void Transform::rotateY(float deltaAngle)
+{
+    yRot += deltaAngle;
+}
+
+void Transform::rotateZ(float deltaAngle)
+{
+    zRot += deltaAngle;
+}
+
+Matrix4D Transform::rotateX()
+{
+    float radianRot = degreeToRadian(xRot);
+    float c = cos(radianRot);
+    float s = sin(radianRot);
+    Matrix4D rotation;
+    rotation(0, 0) = 1.0f;
+    rotation(1, 1) = c;
+    rotation(2, 2) = c;
+    rotation(1, 2) = -s;
+    rotation(2, 1) = s;
+    rotation(3, 3) = 1.0f;
+
+    return rotation;
+}
+
+Matrix4D Transform::rotateY()
+{
+    float radianRot = degreeToRadian(yRot);
+    float c = cos(radianRot);
+    float s = sin(radianRot);
+    Matrix4D rotation;
+    rotation(0, 0) = c;
+    rotation(1, 1) = 1.0f;
+    rotation(2, 2) = c;
+    rotation(0, 2) = s;
+    rotation(2, 0) = -s;
+    rotation(3, 3) = 1.0f;
+
+    return rotation;
+}
+
+Matrix4D Transform::rotateZ()
+{
+    float radianRot = degreeToRadian(zRot);
+    float c = cos(radianRot);
+    float s = sin(radianRot);
+    Matrix4D rotation;
+    rotation(0, 0) = c;
+    rotation(1, 1) = c;
+    rotation(2, 2) = 1;
+    rotation(0, 1) = -s;
+    rotation(1, 0) = s;
+    rotation(3, 3) = 1.0f;
+
+    return rotation;
+}
+
+Matrix4D Transform::rotate()
+{
+    Matrix4D rotX = rotateX();
+    Matrix4D rotY = rotateY();
+    Matrix4D rotZ = rotateZ();
+
+    return rotX * rotY * rotZ;
 }
 
 }

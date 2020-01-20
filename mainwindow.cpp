@@ -10,7 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), mb(nullptr)
 {
     //glWidget = new TriangleQuadRenderer;
-    glWidget = new SimpleLightingRenderer;
+    //glWidget = new SimpleLightingRenderer;
+    glWidget = new SimpleLightingRenderer(2);
     setCentralWidget(glWidget);
     processMenu();
 }

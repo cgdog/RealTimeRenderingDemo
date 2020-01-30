@@ -23,10 +23,17 @@ void SimpleLightingRenderer::changeLight()
         lights[0].setPosition(Vector4(-1.25247f, 1.86265e-09f, -2.10285f, 1.0f));
         lights[0].setColor(Vector4(1.0f, 0.3f, 0.2f, 1.0f));
     }
-    else if (lightNum > 1)
+    else if (lightNum == 2)
     {
         lights[1].setPosition(Vector4(1.25247f, 1.86265e-09f, -2.10285f, 1.0f));
         lights[1].setColor(Vector4(1.0f, 1.0f, 0.2f, 1.0f));
+    }
+    else if (lightNum == 3)
+    {
+        lights[1].setPosition(Vector4(1.25247f, 1.86265e-09f, -2.10285f, 1.0f));
+        lights[1].setColor(Vector4(1.0f, 0.0f, 0.2f, 1.0f));
+        lights[2].setPosition(Vector4(1.25247f, 1.86265e-09f, -2.10285f, 1.0f));
+        lights[2].setColor(Vector4(0.0f, 1.0f, 0.0f, 0.0f));
     }
 }
 
